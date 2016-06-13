@@ -18,12 +18,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ury-L0-ueL">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ury-L0-ueL">
                                 <rect key="frame" x="-6" y="-33" width="326" height="552"/>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VCW-OC-DN2">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VCW-OC-DN2">
                                 <rect key="frame" x="92" y="447" width="53" height="59"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="53" id="V31-Wt-T5t"/>
+                                    <constraint firstAttribute="height" constant="59" id="k6P-GG-YgS"/>
+                                </constraints>
                                 <state key="normal" title="Start">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -31,9 +35,13 @@
                                     <action selector="startAndPauseButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="a3F-uD-OFw"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T2D-he-6Vl">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T2D-he-6Vl">
                                 <rect key="frame" x="184" y="447" width="53" height="59"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="59" id="Q0M-L4-iSU"/>
+                                    <constraint firstAttribute="width" constant="53" id="gTf-ga-ylW"/>
+                                </constraints>
                                 <state key="normal" title="Stop">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -44,10 +52,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="ury-L0-ueL" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-22" id="3vz-kV-OMU"/>
-                            <constraint firstAttribute="trailing" secondItem="ury-L0-ueL" secondAttribute="trailing" id="6YO-kb-zCC"/>
-                            <constraint firstItem="ury-L0-ueL" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="-33" id="N47-Oz-dAg"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="ury-L0-ueL" secondAttribute="bottom" constant="222" id="sHz-H0-RXs"/>
+                            <constraint firstItem="ury-L0-ueL" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="TUf-1K-Lgz"/>
+                            <constraint firstItem="ury-L0-ueL" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-22" id="Vj6-xL-yKi"/>
+                            <constraint firstItem="T2D-he-6Vl" firstAttribute="height" secondItem="VCW-OC-DN2" secondAttribute="height" id="Ydd-v4-nRo"/>
+                            <constraint firstItem="T2D-he-6Vl" firstAttribute="width" secondItem="VCW-OC-DN2" secondAttribute="width" id="d7g-FF-q8u"/>
+                            <constraint firstItem="ury-L0-ueL" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="-33" id="gYF-2h-0pH"/>
+                            <constraint firstAttribute="trailing" secondItem="ury-L0-ueL" secondAttribute="trailing" id="qpv-eW-SEp"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Map" id="HOg-N8-sBB"/>
