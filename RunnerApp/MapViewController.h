@@ -9,6 +9,12 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 
-@interface MapViewController : UIViewController
+@interface MapViewController : UIViewController <UIActionSheetDelegate, CLLocationManagerDelegate>
+
+@property int seconds;
+@property float distance;
+@property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, strong) NSMutableArray *locations;
+@property (nonatomic, strong) NSTimer *timer;
 
 @end
