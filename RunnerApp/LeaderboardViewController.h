@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  LeaderboardViewController.h
 //  RunnerApp
 //
 //  Created by DetroitLabs on 6/13/16.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface LeaderboardViewController : UIViewController
 
 @end
-
