@@ -16,6 +16,7 @@
 		43D7D1BC1D0F35360087EE80 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D7D1BB1D0F35360087EE80 /* MapViewController.m */; };
 		43D7D1BF1D0F35460087EE80 /* LeaderboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D7D1BE1D0F35460087EE80 /* LeaderboardViewController.m */; };
 		43D7D1C21D0F361C0087EE80 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D7D1C11D0F361C0087EE80 /* MapKit.framework */; };
+		87F1E21A1D0F3B1700031D98 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87F1E2191D0F3B1700031D98 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		43D7D1BD1D0F35460087EE80 /* LeaderboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeaderboardViewController.h; sourceTree = "<group>"; };
 		43D7D1BE1D0F35460087EE80 /* LeaderboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeaderboardViewController.m; sourceTree = "<group>"; };
 		43D7D1C11D0F361C0087EE80 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		87F1E2191D0F3B1700031D98 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87F1E21A1D0F3B1700031D98 /* CoreLocation.framework in Frameworks */,
 				43D7D1C21D0F361C0087EE80 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -50,6 +53,7 @@
 		43D7D1951D0F0C230087EE80 = {
 			isa = PBXGroup;
 			children = (
+				87F1E2191D0F3B1700031D98 /* CoreLocation.framework */,
 				43D7D1C11D0F361C0087EE80 /* MapKit.framework */,
 				43D7D1B81D0F0CD00087EE80 /* .gitignore */,
 				43D7D1A01D0F0C230087EE80 /* RunnerApp */,
@@ -130,6 +134,11 @@
 				TargetAttributes = {
 					43D7D19D1D0F0C230087EE80 = {
 						CreatedOnToolsVersion = 7.3.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
