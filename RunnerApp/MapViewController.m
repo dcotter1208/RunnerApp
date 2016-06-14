@@ -15,7 +15,9 @@
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (nonatomic, strong) NSMutableArray *recordedLocations;
 @property (nonatomic) float distance;
-@property (nonatomic) float seconds;
+@property (nonatomic) float accumulatedDistance;
+@property (nonatomic) int accumulatedSeconds;
+@property (nonatomic) int seconds;
 
 
 @end
@@ -27,6 +29,9 @@ MKCoordinateRegion userLocation;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _accumulatedDistance = 0;
+    _accumulatedSeconds = 0;
 
     [self mapSetup];
 }
@@ -39,29 +44,63 @@ MKCoordinateRegion userLocation;
 
 - (IBAction)startAndPauseButtonPressed:(id)sender {
 
-    _seconds = 0;
-    _distance = 0;
-    _recordedLocations = [NSMutableArray array];
-    _timer = [NSTimer scheduledTimerWithTimeInterval:(1.0)
-                                                  target:self
-                                                selector:@selector(eachSecond)
-                                                userInfo:nil
-                                                 repeats:YES];
+    if ([_startAndPauseButton.titleLabel.text isEqualToString:@"Start"])
+    {
+        _seconds = 0;
+        _distance = 0;
+        _accumulatedDistance = 0;
+        _recordedLocations = [NSMutableArray array];
+        [self startTimer];
+        [_startAndPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
+    }
+    else if ([_startAndPauseButton.titleLabel.text isEqualToString:@"Pause"])
+    {
+        [_timer invalidate];
+        [_startAndPauseButton setTitle:@"Resume" forState:UIControlStateNormal];
+        _recordedLocations = [NSMutableArray array];
+        _accumulatedDistance = _distance;
+    }
+    else //RESUME
+    {
+        [self startTimer];
+        _distance = _accumulatedDistance;
+        [_startAndPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
+    }
     
     
 }
 
+-(void)startTimer {
+    _timer = [NSTimer scheduledTimerWithTimeInterval:(1.0)
+                                              target:self
+                                            selector:@selector(eachSecond)
+                                            userInfo:nil
+                                             repeats:YES];
+}
+
 - (IBAction)stopButtonPressed:(id)sender {
+    [_startAndPauseButton setTitle:@"Start" forState:UIControlStateNormal];
     [_timer invalidate];
     NSDate* now = [NSDate date];
-    Run *run = [[Run alloc]initRun:_seconds distance:_distance date:now];
-    NSLog(@"Seconds: %f, Distance: %f, Date: %@", run.duration, run.distance, run.date);
+    Run *run = [[Run alloc]initRun:_accumulatedSeconds distance:_accumulatedDistance date:now];
+    //will update conditionally based on dialog in future -- alert field
+    _accumulatedSeconds = 0;
+    _accumulatedDistance = 0;
 }
 
 - (void)eachSecond {
     _seconds++;
-    _durationLabel.text = [NSString stringWithFormat:@"Time: %f", _seconds];
+    
+    _durationLabel.text = [NSString stringWithFormat:@"Time: %@", [self formatRunTime:_seconds]];
     _distanceLabel.text = [NSString stringWithFormat:@"Distance: %f", _distance];
+}
+
+-(NSString *)formatRunTime:(int)runTime {
+    int seconds2 = runTime % 60;
+    int minutes2 = (runTime / 60) % 60;
+    int hours2 = (runTime / 3600);
+    NSString *formattedTime = [NSString stringWithFormat:@"%02i:%02i:%02i", hours2, minutes2, seconds2];
+    return formattedTime;
 }
 
 -(void)mapSetup {
@@ -104,34 +143,7 @@ MKCoordinateRegion userLocation;
             
         }
     }
-    
 }
 
--(void)startTimer {
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self
-                                                selector:@selector(addSecond) userInfo:nil repeats:YES];
-}
-
--(void)addSecond {
-    _seconds++;
-}
-
-//- (void)startLocationUpdates
-//{
-//    // Create the location manager if this object does not
-//    // already have one.
-//    if (self.locationManager == nil) {
-//        self.locationManager = [[CLLocationManager alloc] init];
-//    }
-//    
-//    self.locationManager.delegate = self;
-//    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-//    self.locationManager.activityType = CLActivityTypeFitness;
-//    
-//    // Movement threshold for new events.
-//    self.locationManager.distanceFilter = 10; // meters
-//    
-//    [self.locationManager startUpdatingLocation];
-//}
 
 @end
