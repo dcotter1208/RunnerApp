@@ -13,9 +13,10 @@
 @interface MapViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *startAndPauseButton;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
-@property (nonatomic) float seconds;
 @property (nonatomic, strong) NSMutableArray *recordedLocations;
 @property (nonatomic) float distance;
+@property (nonatomic) float seconds;
+
 
 @end
 
@@ -26,10 +27,8 @@ MKCoordinateRegion userLocation;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _recordedLocations = [[NSMutableArray alloc]init];
 
     [self mapSetup];
-    // Do any additional setup after loading the view.
 }
 
 
@@ -40,15 +39,15 @@ MKCoordinateRegion userLocation;
 
 - (IBAction)startAndPauseButtonPressed:(id)sender {
 
-    self.seconds = 0;
-    self.distance = 0;
-//    self.locations = [NSMutableArray array];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:(1.0)
+    _seconds = 0;
+    _distance = 0;
+    _recordedLocations = [NSMutableArray array];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:(1.0)
                                                   target:self
                                                 selector:@selector(eachSecond)
                                                 userInfo:nil
                                                  repeats:YES];
-//    [self startLocationUpdates];
+    
     
 }
 
@@ -60,10 +59,9 @@ MKCoordinateRegion userLocation;
 }
 
 - (void)eachSecond {
-    self.seconds++;
-    self.durationLabel.text = [NSString stringWithFormat:@"Time: %f", _seconds];
-    NSLog(@"Distance %f", _distance);
-    self.distanceLabel.text = [NSString stringWithFormat:@"Distance: %f", _distance];
+    _seconds++;
+    _durationLabel.text = [NSString stringWithFormat:@"Time: %f", _seconds];
+    _distanceLabel.text = [NSString stringWithFormat:@"Distance: %f", _distance];
 }
 
 -(void)mapSetup {
@@ -93,8 +91,8 @@ MKCoordinateRegion userLocation;
             // update distance
             if (self.recordedLocations.count > 0) {
                 _distance += [newLocation distanceFromLocation:self.recordedLocations.lastObject];
-//                NSLog(@"Distance: %f", distance);
             }
+            
             [self.recordedLocations addObject:newLocation];
 
             //Creates a region based on the user's new location.
@@ -107,12 +105,16 @@ MKCoordinateRegion userLocation;
         }
     }
     
-    //Always want the most recent location so we grab the last object in the array of locations.
-//    newLocation = [locations lastObject];
-    
 }
 
+-(void)startTimer {
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self
+                                                selector:@selector(addSecond) userInfo:nil repeats:YES];
+}
 
+-(void)addSecond {
+    _seconds++;
+}
 
 //- (void)startLocationUpdates
 //{
