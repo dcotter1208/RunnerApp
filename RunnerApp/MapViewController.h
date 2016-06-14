@@ -16,5 +16,7 @@
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) NSMutableArray *locations;
 @property (nonatomic, strong) NSTimer *timer;
+@property (weak, nonatomic) IBOutlet UILabel *durationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
 
 @end
