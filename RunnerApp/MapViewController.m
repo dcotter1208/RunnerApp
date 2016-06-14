@@ -13,17 +13,20 @@
 @property (weak, nonatomic) IBOutlet UIButton *startAndPauseButton;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
+@property (nonatomic, strong) NSMutableArray *recordedLocations;
+
 @end
 
-CLLocation *newLocation, *oldLocation;
+CLLocation *newLocation;
 MKCoordinateRegion userLocation;
-
+double distance;
 @implementation MapViewController 
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    _recordedLocations = [[NSMutableArray alloc]init];
+
     [self mapSetup];
     // Do any additional setup after loading the view.
 }
@@ -37,7 +40,7 @@ MKCoordinateRegion userLocation;
 - (IBAction)startAndPauseButtonPressed:(id)sender {
     
 //    self.seconds = 0;
-//    self.distance = 0;
+    self.distance = 0;
 //    self.locations = [NSMutableArray array];
 //    self.timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self
 //                                                selector:@selector(eachSecond) userInfo:nil repeats:YES];
@@ -65,8 +68,6 @@ MKCoordinateRegion userLocation;
         [_locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
         [_locationManager setActivityType:CLActivityTypeFitness];
         [_locationManager requestWhenInUseAuthorization];
-        
-        //May only need the CLActivityTypeFitness and not the distance filter. Choose one or other???
         [_locationManager setDistanceFilter:10];
         [_locationManager startUpdatingLocation];
         newLocation = _locationManager.location;
@@ -75,14 +76,27 @@ MKCoordinateRegion userLocation;
 
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
     
+    for (CLLocation *newLocation in locations) {
+        if (newLocation.horizontalAccuracy < 20) {
+            // update distance
+            if (self.recordedLocations.count > 0) {
+                distance += [newLocation distanceFromLocation:self.recordedLocations.lastObject];
+                NSLog(@"Distance: %f", distance);
+            }
+            [self.recordedLocations addObject:newLocation];
+
+            //Creates a region based on the user's new location.
+            userLocation = MKCoordinateRegionMakeWithDistance(newLocation.coordinate, 500.0, 500.0);
+            
+            //map's region is set using the region we made from the user's location. Each time the user's location changes this method is called and the new map region is set.
+            [_mapView setRegion:userLocation animated:YES];
+            
+            
+        }
+    }
+    
     //Always want the most recent location so we grab the last object in the array of locations.
-    newLocation = [locations lastObject];
-    
-    //Creates a region based on the user's new location.
-    userLocation = MKCoordinateRegionMakeWithDistance(newLocation.coordinate, 500.0, 500.0);
-    
-    //map's region is set using the region we made from the user's location. Each time the user's location changes this method is called and the new map region is set.
-    [_mapView setRegion:userLocation animated:YES];
+//    newLocation = [locations lastObject];
     
 }
 
