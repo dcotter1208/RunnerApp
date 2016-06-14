@@ -10,7 +10,7 @@
 
 @implementation Run
 
--(instancetype)initRun:(float *)duration distance:(float *)distance date:(NSDate *)date
+-(instancetype)initRun:(float)duration distance:(float)distance date:(NSDate *)date
 {
     self = [super init];
     

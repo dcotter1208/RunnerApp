@@ -8,13 +8,14 @@
 
 #import "MapViewController.h"
 #import <CoreLocation/CoreLocation.h>
+#import "Run.h"
 
 @interface MapViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *startAndPauseButton;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
-
+@property (nonatomic) float seconds;
 @property (nonatomic, strong) NSMutableArray *recordedLocations;
-@property (nonatomic) double distance;
+@property (nonatomic) float distance;
 
 @end
 
@@ -53,12 +54,14 @@ MKCoordinateRegion userLocation;
 
 - (IBAction)stopButtonPressed:(id)sender {
     [_timer invalidate];
-    
+    NSDate* now = [NSDate date];
+    Run *run = [[Run alloc]initRun:_seconds distance:_distance date:now];
+    NSLog(@"Seconds: %f, Distance: %f, Date: %@", run.duration, run.distance, run.date);
 }
 
 - (void)eachSecond {
     self.seconds++;
-    self.durationLabel.text = [NSString stringWithFormat:@"Time: %d", _seconds];
+    self.durationLabel.text = [NSString stringWithFormat:@"Time: %f", _seconds];
     NSLog(@"Distance %f", _distance);
     self.distanceLabel.text = [NSString stringWithFormat:@"Distance: %f", _distance];
 }
