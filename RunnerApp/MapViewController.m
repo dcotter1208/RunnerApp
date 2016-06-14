@@ -14,13 +14,13 @@
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 @property (nonatomic, strong) NSMutableArray *recordedLocations;
+@property (nonatomic) double distance;
 
 @end
 
 CLLocation *newLocation;
 MKCoordinateRegion userLocation;
-double distance;
-@implementation MapViewController 
+@implementation MapViewController
 
 
 - (void)viewDidLoad {
@@ -38,20 +38,29 @@ double distance;
 }
 
 - (IBAction)startAndPauseButtonPressed:(id)sender {
-    
-//    self.seconds = 0;
+
+    self.seconds = 0;
     self.distance = 0;
 //    self.locations = [NSMutableArray array];
-//    self.timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self
-//                                                selector:@selector(eachSecond) userInfo:nil repeats:YES];
-////    [self startLocationUpdates];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:(1.0)
+                                                  target:self
+                                                selector:@selector(eachSecond)
+                                                userInfo:nil
+                                                 repeats:YES];
+//    [self startLocationUpdates];
     
 }
-
 
 - (IBAction)stopButtonPressed:(id)sender {
     
     
+}
+
+- (void)eachSecond {
+    self.seconds++;
+    self.durationLabel.text = [NSString stringWithFormat:@"Time: %d", _seconds];
+    NSLog(@"Distance %f", _distance);
+    self.distanceLabel.text = [NSString stringWithFormat:@"Distance: %f", _distance];
 }
 
 -(void)mapSetup {
@@ -80,8 +89,8 @@ double distance;
         if (newLocation.horizontalAccuracy < 20) {
             // update distance
             if (self.recordedLocations.count > 0) {
-                distance += [newLocation distanceFromLocation:self.recordedLocations.lastObject];
-                NSLog(@"Distance: %f", distance);
+                _distance += [newLocation distanceFromLocation:self.recordedLocations.lastObject];
+//                NSLog(@"Distance: %f", distance);
             }
             [self.recordedLocations addObject:newLocation];
 
