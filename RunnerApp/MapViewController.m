@@ -14,6 +14,9 @@
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 @property (nonatomic, strong) NSMutableArray *recordedLocations;
+@property (nonatomic) float distance;
+@property (nonatomic) float seconds;
+
 
 @end
 
@@ -25,7 +28,6 @@ double distance;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _recordedLocations = [[NSMutableArray alloc]init];
 
     [self mapSetup];
     // Do any additional setup after loading the view.
@@ -39,18 +41,20 @@ double distance;
 
 - (IBAction)startAndPauseButtonPressed:(id)sender {
     
-//    self.seconds = 0;
+    self.seconds = 0.00;
     self.distance = 0;
-//    self.locations = [NSMutableArray array];
-//    self.timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self
-//                                                selector:@selector(eachSecond) userInfo:nil repeats:YES];
-////    [self startLocationUpdates];
+    _recordedLocations = [[NSMutableArray alloc]init];
+    
+    [self startTimer];
+    
+//    [self startLocationUpdates];
     
 }
 
 
 - (IBAction)stopButtonPressed:(id)sender {
     
+    NSLog(@"END DISTANCE: %f", distance);
     
 }
 
@@ -81,8 +85,9 @@ double distance;
             // update distance
             if (self.recordedLocations.count > 0) {
                 distance += [newLocation distanceFromLocation:self.recordedLocations.lastObject];
-                NSLog(@"Distance: %f", distance);
+//                NSLog(@"Distance: %f", distance);
             }
+            
             [self.recordedLocations addObject:newLocation];
 
             //Creates a region based on the user's new location.
@@ -95,12 +100,18 @@ double distance;
         }
     }
     
-    //Always want the most recent location so we grab the last object in the array of locations.
-//    newLocation = [locations lastObject];
+}
+
+-(void)startTimer {
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self
+                                                selector:@selector(addSecond) userInfo:nil repeats:YES];
     
 }
 
-
+-(void)addSecond {
+    _seconds++;
+    NSLog(@"seconds: %f", _seconds);
+}
 
 //- (void)startLocationUpdates
 //{
