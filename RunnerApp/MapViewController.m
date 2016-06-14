@@ -86,6 +86,8 @@ MKCoordinateRegion userLocation;
     
 }
 
+
+
 //- (void)startLocationUpdates
 //{
 //    // Create the location manager if this object does not
