@@ -36,12 +36,12 @@ MKCoordinateRegion userLocation;
 
 - (IBAction)startAndPauseButtonPressed:(id)sender {
     
-    self.seconds = 0;
-    self.distance = 0;
-    self.locations = [NSMutableArray array];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self
-                                                selector:@selector(eachSecond) userInfo:nil repeats:YES];
-//    [self startLocationUpdates];
+//    self.seconds = 0;
+//    self.distance = 0;
+//    self.locations = [NSMutableArray array];
+//    self.timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self
+//                                                selector:@selector(eachSecond) userInfo:nil repeats:YES];
+////    [self startLocationUpdates];
     
 }
 
@@ -65,6 +65,8 @@ MKCoordinateRegion userLocation;
         [_locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
         [_locationManager setActivityType:CLActivityTypeFitness];
         [_locationManager requestWhenInUseAuthorization];
+        
+        //May only need the CLActivityTypeFitness and not the distance filter. Choose one or other???
         [_locationManager setDistanceFilter:10];
         [_locationManager startUpdatingLocation];
         newLocation = _locationManager.location;
@@ -73,16 +75,13 @@ MKCoordinateRegion userLocation;
 
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
     
+    //Always want the most recent location so we grab the last object in the array of locations.
     newLocation = [locations lastObject];
     
-    if (locations.count > 1) {
-        NSUInteger newLocationIndex = [locations indexOfObject:newLocation];
-        oldLocation = [locations objectAtIndex:newLocationIndex];
-    } else {
-        oldLocation = nil;
-    }
+    //Creates a region based on the user's new location.
+    userLocation = MKCoordinateRegionMakeWithDistance(newLocation.coordinate, 500.0, 500.0);
     
-    userLocation = MKCoordinateRegionMakeWithDistance(newLocation.coordinate, 300.0, 300.0);
+    //map's region is set using the region we made from the user's location. Each time the user's location changes this method is called and the new map region is set.
     [_mapView setRegion:userLocation animated:YES];
     
 }
