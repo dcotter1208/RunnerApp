@@ -8,11 +8,11 @@
 
 #import "MapViewController.h"
 #import <CoreLocation/CoreLocation.h>
+#import "Run.h"
 
 @interface MapViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *startAndPauseButton;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
-
 @property (nonatomic, strong) NSMutableArray *recordedLocations;
 @property (nonatomic) float distance;
 @property (nonatomic) float seconds;
@@ -22,15 +22,13 @@
 
 CLLocation *newLocation;
 MKCoordinateRegion userLocation;
-double distance;
-@implementation MapViewController 
+@implementation MapViewController
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
     [self mapSetup];
-    // Do any additional setup after loading the view.
 }
 
 
@@ -40,22 +38,30 @@ double distance;
 }
 
 - (IBAction)startAndPauseButtonPressed:(id)sender {
+
+    _seconds = 0;
+    _distance = 0;
+    _recordedLocations = [NSMutableArray array];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:(1.0)
+                                                  target:self
+                                                selector:@selector(eachSecond)
+                                                userInfo:nil
+                                                 repeats:YES];
     
-    self.seconds = 0.00;
-    self.distance = 0;
-    _recordedLocations = [[NSMutableArray alloc]init];
-    
-    [self startTimer];
-    
-//    [self startLocationUpdates];
     
 }
 
-
 - (IBAction)stopButtonPressed:(id)sender {
-    
-    NSLog(@"END DISTANCE: %f", distance);
-    
+    [_timer invalidate];
+    NSDate* now = [NSDate date];
+    Run *run = [[Run alloc]initRun:_seconds distance:_distance date:now];
+    NSLog(@"Seconds: %f, Distance: %f, Date: %@", run.duration, run.distance, run.date);
+}
+
+- (void)eachSecond {
+    _seconds++;
+    _durationLabel.text = [NSString stringWithFormat:@"Time: %f", _seconds];
+    _distanceLabel.text = [NSString stringWithFormat:@"Distance: %f", _distance];
 }
 
 -(void)mapSetup {
@@ -84,8 +90,7 @@ double distance;
         if (newLocation.horizontalAccuracy < 20) {
             // update distance
             if (self.recordedLocations.count > 0) {
-                distance += [newLocation distanceFromLocation:self.recordedLocations.lastObject];
-//                NSLog(@"Distance: %f", distance);
+                _distance += [newLocation distanceFromLocation:self.recordedLocations.lastObject];
             }
             
             [self.recordedLocations addObject:newLocation];
@@ -105,12 +110,10 @@ double distance;
 -(void)startTimer {
     self.timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self
                                                 selector:@selector(addSecond) userInfo:nil repeats:YES];
-    
 }
 
 -(void)addSecond {
     _seconds++;
-    NSLog(@"seconds: %f", _seconds);
 }
 
 //- (void)startLocationUpdates
