@@ -52,7 +52,7 @@ MKCoordinateRegion userLocation;
 }
 
 - (IBAction)stopButtonPressed:(id)sender {
-    
+    [_timer invalidate];
     
 }
 
