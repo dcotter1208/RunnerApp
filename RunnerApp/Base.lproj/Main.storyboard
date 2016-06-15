@@ -21,27 +21,21 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ury-L0-ueL">
                                 <rect key="frame" x="-6" y="-33" width="326" height="552"/>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VCW-OC-DN2">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VCW-OC-DN2">
                                 <rect key="frame" x="0.0" y="469" width="155" height="50"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="53" id="V31-Wt-T5t"/>
-                                    <constraint firstAttribute="height" constant="59" id="k6P-GG-YgS"/>
-                                </constraints>
+                                <color key="backgroundColor" red="0.086220780890000001" green="0.77730284689999996" blue="0.020927558969999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
                                 <state key="normal" title="Start">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="startAndPauseButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="a3F-uD-OFw"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T2D-he-6Vl">
-                                <rect key="frame" x="163" y="469" width="157" height="49"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="59" id="Q0M-L4-iSU"/>
-                                    <constraint firstAttribute="width" constant="53" id="gTf-ga-ylW"/>
-                                </constraints>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T2D-he-6Vl">
+                                <rect key="frame" x="164" y="468" width="155" height="50"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
                                 <state key="normal" title="Stop">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -49,27 +43,39 @@
                                     <action selector="stopButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="00b-Xp-T6o"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Distance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J34-yx-yux">
-                                <rect key="frame" x="0.0" y="395.5" width="320" height="73.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Duration" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kLR-K9-Xwb">
+                                <rect key="frame" x="0.0" y="380" width="320" height="43.5"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Duration" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kLR-K9-Xwb">
-                                <rect key="frame" x="0.0" y="293" width="320" height="102.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Distance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J34-yx-yux">
+                                <rect key="frame" x="0.0" y="425" width="320" height="43.5"/>
+                                <color key="backgroundColor" red="0.95422236870335109" green="1" blue="0.98305355951670848" alpha="0.5" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
+                                <color key="highlightedColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="calibratedRGB"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="VCW-OC-DN2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Fx0-pQ-U4z"/>
+                            <constraint firstItem="kLR-K9-Xwb" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="5" id="GAT-xs-ku8"/>
+                            <constraint firstItem="kLR-K9-Xwb" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="5" id="SyZ-by-1E4"/>
                             <constraint firstItem="ury-L0-ueL" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="TUf-1K-Lgz"/>
                             <constraint firstItem="ury-L0-ueL" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-22" id="Vj6-xL-yKi"/>
-                            <constraint firstItem="T2D-he-6Vl" firstAttribute="height" secondItem="VCW-OC-DN2" secondAttribute="height" id="Ydd-v4-nRo"/>
-                            <constraint firstItem="T2D-he-6Vl" firstAttribute="width" secondItem="VCW-OC-DN2" secondAttribute="width" id="d7g-FF-q8u"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="VCW-OC-DN2" secondAttribute="bottom" id="Wzd-kE-Yw4"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="T2D-he-6Vl" secondAttribute="bottom" id="XgZ-Nw-5Fx"/>
+                            <constraint firstItem="VCW-OC-DN2" firstAttribute="height" secondItem="T2D-he-6Vl" secondAttribute="height" id="aY1-gZ-ze3"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="T2D-he-6Vl" secondAttribute="trailing" id="fTk-tj-43w"/>
                             <constraint firstItem="ury-L0-ueL" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="-33" id="gYF-2h-0pH"/>
+                            <constraint firstItem="VCW-OC-DN2" firstAttribute="width" secondItem="T2D-he-6Vl" secondAttribute="width" id="koY-ZY-stw"/>
+                            <constraint firstItem="VCW-OC-DN2" firstAttribute="top" secondItem="J34-yx-yux" secondAttribute="bottom" constant="10" id="nDE-UO-5dL"/>
                             <constraint firstAttribute="trailing" secondItem="ury-L0-ueL" secondAttribute="trailing" id="qpv-eW-SEp"/>
+                            <constraint firstItem="J34-yx-yux" firstAttribute="top" secondItem="kLR-K9-Xwb" secondAttribute="bottom" constant="10" id="u9P-st-gj8"/>
+                            <constraint firstItem="J34-yx-yux" firstAttribute="top" secondItem="kLR-K9-Xwb" secondAttribute="bottom" constant="5" id="yyR-U4-bku"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="T2D-he-6Vl" secondAttribute="trailing" id="z8w-DA-fMi"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Map" id="HOg-N8-sBB"/>
