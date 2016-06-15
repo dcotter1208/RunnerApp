@@ -92,7 +92,7 @@ MKCoordinateRegion userLocation;
     _seconds++;
     
     _durationLabel.text = [NSString stringWithFormat:@"Time: %@", [self formatRunTime:_seconds]];
-    _distanceLabel.text = [NSString stringWithFormat:@"Distance: %f", _distance];
+    _distanceLabel.text = [NSString stringWithFormat:@"Distance (miles): %@", [self formatRunDistance:_distance]];
 }
 
 -(NSString *)formatRunTime:(int)runTime {
@@ -101,6 +101,12 @@ MKCoordinateRegion userLocation;
     int hours2 = (runTime / 3600);
     NSString *formattedTime = [NSString stringWithFormat:@"%02i:%02i:%02i", hours2, minutes2, seconds2];
     return formattedTime;
+}
+
+-(NSString *)formatRunDistance:(float)runDistance {
+    float miles = runDistance/1609.344;
+    NSString *formattedDistance = [NSString stringWithFormat:@"%.2f", miles];
+    return formattedDistance;
 }
 
 -(void)mapSetup {
