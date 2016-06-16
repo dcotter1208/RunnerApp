@@ -6,6 +6,8 @@
 //  Copyright © 2016 DetroitLabs. All rights reserved.
 //
 
+@import Firebase;
+@import FirebaseDatabase;
 #import "MapViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import "Run.h"
@@ -19,7 +21,6 @@
 @property (nonatomic, strong) NSMutableArray *recordedLocations;
 @property (nonatomic) float distance;
 @property (nonatomic) float accumulatedDistance;
-@property (nonatomic) int accumulatedSeconds;
 @property (nonatomic) int seconds;
 
 @end
@@ -32,7 +33,6 @@ MKCoordinateRegion userLocation;
     [super viewDidLoad];
     
     _accumulatedDistance = 0;
-    _accumulatedSeconds = 0;
 
     [self mapSetup];
 }
@@ -40,13 +40,12 @@ MKCoordinateRegion userLocation;
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (IBAction)startAndPauseButtonPressed:(id)sender {
 
-    if ([_startAndPauseButton.titleLabel.text isEqualToString:@"Start"])
-    {
+    //START
+    if ([_startAndPauseButton.titleLabel.text isEqualToString:@"Start"]) {
         _seconds = 0;
         _distance = 0;
         _accumulatedDistance = 0;
@@ -54,20 +53,18 @@ MKCoordinateRegion userLocation;
         [self startTimer];
         [_startAndPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
     }
-    else if ([_startAndPauseButton.titleLabel.text isEqualToString:@"Pause"])
-    {
+    //PAUSE
+    else if ([_startAndPauseButton.titleLabel.text isEqualToString:@"Pause"]) {
         [_timer invalidate];
         [_startAndPauseButton setTitle:@"Resume" forState:UIControlStateNormal];
         _recordedLocations = [NSMutableArray array];
-        _accumulatedDistance = _distance;
     }
-    else //RESUME
-    {
+    //RESUME
+    else {
         [self startTimer];
         _distance = _accumulatedDistance;
         [_startAndPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
     }
-    
     
 }
 
@@ -83,17 +80,27 @@ MKCoordinateRegion userLocation;
     [_startAndPauseButton setTitle:@"Start" forState:UIControlStateNormal];
     [_timer invalidate];
     NSDate* now = [NSDate date];
-    Run *run = [[Run alloc]initRun:_accumulatedSeconds distance:_accumulatedDistance date:now];
+    
+    NSLog(@"Duration %i", _seconds);
+    NSLog(@"Distance %f", _accumulatedDistance);
+    NSLog(@"Date %@", now);
+    
+    NSString *timeStamp = [self formattedDate:now];
+    
+    Run *run = [[Run alloc]initRun:_seconds distance:_accumulatedDistance date:timeStamp];
+    
+    [self saveRunToFirebase:run];
+    
     //will update conditionally based on dialog in future -- alert field
-    _accumulatedSeconds = 0;
     _accumulatedDistance = 0;
 }
 
 - (void)eachSecond {
     _seconds++;
-    
+    _accumulatedDistance += _distance;
+    NSLog(@"Accumulated Distance: %@", [self formatRunDistance:_accumulatedDistance]);
     _durationLabel.text = [NSString stringWithFormat:@"Time: %@", [self formatRunTime:_seconds]];
-    _distanceLabel.text = [NSString stringWithFormat:@"Distance (miles): %@", [self formatRunDistance:_distance]];
+    _distanceLabel.text = [NSString stringWithFormat:@"Distance (miles): %@", [self formatRunDistance:_accumulatedDistance]];
 }
 
 -(NSString *)formatRunTime:(int)runTime {
@@ -108,6 +115,19 @@ MKCoordinateRegion userLocation;
     float miles = runDistance/1609.344;
     NSString *formattedDistance = [NSString stringWithFormat:@"%.2f", miles];
     return formattedDistance;
+}
+
+-(NSString *)formattedDate:(NSDate *)date {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+    [dateFormatter setDateFormat:@"MM/dd/YYYY"];
+    NSString *formattedRunDate = [dateFormatter stringFromDate:date];
+    
+    return formattedRunDate;
+}
+
+-(void)saveRunToFirebase:(Run *)run {
+
+
 }
 
 -(void)mapSetup {
@@ -136,7 +156,7 @@ MKCoordinateRegion userLocation;
         if (newLocation.horizontalAccuracy < 20) {
             // update distance
             if (self.recordedLocations.count > 0) {
-                _distance += [newLocation distanceFromLocation:self.recordedLocations.lastObject];
+                _distance = [newLocation distanceFromLocation:self.recordedLocations.lastObject];
             }
             
             [self.recordedLocations addObject:newLocation];
@@ -146,7 +166,6 @@ MKCoordinateRegion userLocation;
             
             //map's region is set using the region we made from the user's location. Each time the user's location changes this method is called and the new map region is set.
             [_mapView setRegion:userLocation animated:YES];
-            
             
         }
     }
