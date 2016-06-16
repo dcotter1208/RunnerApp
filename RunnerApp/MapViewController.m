@@ -11,21 +11,22 @@
 #import "Run.h"
 
 @interface MapViewController ()
+//Outlets
 @property (weak, nonatomic) IBOutlet UIButton *startAndPauseButton;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+
+//Properties
 @property (nonatomic, strong) NSMutableArray *recordedLocations;
 @property (nonatomic) float distance;
 @property (nonatomic) float accumulatedDistance;
 @property (nonatomic) int accumulatedSeconds;
 @property (nonatomic) int seconds;
 
-
 @end
 
 CLLocation *newLocation;
 MKCoordinateRegion userLocation;
 @implementation MapViewController
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
