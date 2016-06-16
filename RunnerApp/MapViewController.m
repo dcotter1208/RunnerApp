@@ -77,14 +77,12 @@ MKCoordinateRegion userLocation;
 }
 
 - (IBAction)stopButtonPressed:(id)sender {
+    //
     [_startAndPauseButton setTitle:@"Start" forState:UIControlStateNormal];
     [_timer invalidate];
+    
+    //Grab the current date and turn it into a string.
     NSDate* now = [NSDate date];
-    
-    NSLog(@"Duration %i", _seconds);
-    NSLog(@"Distance %f", _accumulatedDistance);
-    NSLog(@"Date %@", now);
-    
     NSString *timeStamp = [self formattedDate:now];
     
     Run *run = [[Run alloc]initRun:_seconds distance:_accumulatedDistance date:timeStamp];
@@ -108,12 +106,14 @@ MKCoordinateRegion userLocation;
     int minutes2 = (runTime / 60) % 60;
     int hours2 = (runTime / 3600);
     NSString *formattedTime = [NSString stringWithFormat:@"%02i:%02i:%02i", hours2, minutes2, seconds2];
+    
     return formattedTime;
 }
 
 -(NSString *)formatRunDistance:(float)runDistance {
     float miles = runDistance/1609.344;
     NSString *formattedDistance = [NSString stringWithFormat:@"%.2f", miles];
+    
     return formattedDistance;
 }
 
@@ -126,8 +126,17 @@ MKCoordinateRegion userLocation;
 }
 
 -(void)saveRunToFirebase:(Run *)run {
+    float miles = run.distance/1609.344;
+    
+    FIRDatabaseReference *fbDataService = [[FIRDatabase database] reference];
+    
+    FIRDatabaseReference *runsRef = [fbDataService child:@"runs"].childByAutoId;
+    
+    NSDictionary *runToAdd = @{@"duration": [NSNumber numberWithInt:run.duration],
+                               @"distance": [NSNumber numberWithFloat:miles],
+                               @"date": run.date};
 
-
+    [runsRef setValue:runToAdd];
 }
 
 -(void)mapSetup {

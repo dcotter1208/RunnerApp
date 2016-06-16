@@ -7,8 +7,14 @@
 //
 
 #import "LeaderboardViewController.h"
+#import "Run.h"
+@import FirebaseDatabase;
+@import Firebase;
+
 
 @interface LeaderboardViewController ()
+
+@property(nonatomic, strong) NSMutableArray *runArray;
 
 @end
 
@@ -16,7 +22,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+    [self queryRunsFromFirebase];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -24,14 +31,29 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
+-(void)queryRunsFromFirebase {
+    FIRDatabaseReference *fbDataService = [[FIRDatabase database] reference];
+    FIRDatabaseReference *spotRef = [fbDataService.ref child:@"runs"];
+    
+    [spotRef observeEventType:FIRDataEventTypeChildAdded
+                    withBlock:^(FIRDataSnapshot *snapshot) {
+                        
+                        NSLog(@"Snapshot: %@", snapshot.value);
+                        
+                        Run *run = [[Run alloc]initRun:[snapshot.value[@"duration"] intValue] distance:[snapshot.value[@"distance"] floatValue] date:snapshot.value[@"date"]];
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+                        NSLog(@"RUN: %@", run);
+                        
+                        [_runArray addObject:run];
+
+        }];
 }
-*/
+
+- (IBAction)pressButton:(id)sender {
+    
+    [self queryRunsFromFirebase];
+    
+}
+
 
 @end
