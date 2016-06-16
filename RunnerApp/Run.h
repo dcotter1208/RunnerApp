@@ -29,10 +29,10 @@
 
 @interface Run : NSObject
 
-@property (nonatomic) float duration;
+@property (nonatomic) int duration;
 @property (nonatomic) float distance;
-@property (nonatomic) NSDate *date;
+@property (nonatomic) NSString *date;
 
--(instancetype)initRun:(float)duration distance:(float)distance date:(NSDate *)date;
+-(instancetype)initRun:(int)duration distance:(float)distance date:(NSString *)date;
 
 @end
