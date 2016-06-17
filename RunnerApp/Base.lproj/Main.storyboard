@@ -273,7 +273,6 @@
                                 <state key="normal" title="Login"/>
                                 <connections>
                                     <action selector="loginButtonPressed:" destination="fep-dl-UFl" eventType="touchUpInside" id="IRo-Qy-V12"/>
-                                    <segue destination="gRa-ix-d55" kind="push" identifier="enterAppSegue" id="ZUE-JR-J4A"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Rx-bb-eSu">
@@ -313,6 +312,7 @@
                     <connections>
                         <outlet property="emailTF" destination="jja-qI-MIj" id="zMW-ZF-gFh"/>
                         <outlet property="passwordTF" destination="gb3-o2-R1u" id="leN-4P-aFs"/>
+                        <segue destination="gRa-ix-d55" kind="push" identifier="enterAppSegue" id="w1H-Io-cWz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VAL-Ua-tQq" userLabel="First Responder" sceneMemberID="firstResponder"/>

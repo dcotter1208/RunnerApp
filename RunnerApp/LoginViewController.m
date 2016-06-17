@@ -19,8 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    [self validateCurrentUser];
+    [self isUserCurrentlyLoggedIn];
     
 }
 
@@ -29,7 +28,7 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)validateCurrentUser {
+-(void)isUserCurrentlyLoggedIn {
     [[FIRAuth auth] addAuthStateDidChangeListener:^(FIRAuth *auth,
                                                     FIRUser *user) {
         if (user != nil) {
@@ -40,21 +39,33 @@
     }];
 }
 
--(void)signUpAlertView {
+-(void)loginFailedAlertView {
     UIAlertController *alertController =[UIAlertController
-                                         alertControllerWithTitle:@"Welcome!"
-                                         message:@"Please sign up with an email and password."
+                                         alertControllerWithTitle:@"Whoops!"
+                                         message:@"Please check your email or password. No account? Sign up!"
                                          preferredStyle:UIAlertControllerStyleAlert];
-    
-    UITextField *email = alertController.textFields.firstObject;
-    UITextField *password = alertController.textFields.lastObject;
-    
-    
+
+
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:ok];
+    [self presentViewController:alertController animated:true completion:nil];
     
 }
 
+-(void)validateUserLoginInfo {
+    [[FIRAuth auth] signInWithEmail:_emailTF.text password:_passwordTF.text completion:^(FIRUser *user, NSError *error) {
+             if (error) {
+                 [self loginFailedAlertView];
+                 NSLog(@"Error: %@", error.description);
+             } else {
+                 [self performSegueWithIdentifier:@"enterAppSegue" sender:self];
+             }
+        }];
+}
+
 - (IBAction)loginButtonPressed:(id)sender {
-    
+
+    [self validateUserLoginInfo];
 }
 
 - (IBAction)signUpButtonPressed:(id)sender {
