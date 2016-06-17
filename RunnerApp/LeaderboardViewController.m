@@ -8,12 +8,14 @@
 
 #import "LeaderboardViewController.h"
 #import "Run.h"
+#import "RunTableViewCell.h"
 @import FirebaseDatabase;
 @import Firebase;
 
 
-@interface LeaderboardViewController ()
+@interface LeaderboardViewController () <UITableViewDelegate, UITableViewDataSource>
 
+@property (weak, nonatomic) IBOutlet UITableView *runTableView;
 @property(nonatomic, strong) NSMutableArray *runArray;
 
 @end
@@ -21,9 +23,9 @@
 @implementation LeaderboardViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-
+    _runArray = [[NSMutableArray alloc]init];
     [self queryRunsFromFirebase];
+    [super viewDidLoad];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -35,23 +37,44 @@
     FIRDatabaseReference *fbDataService = [[FIRDatabase database] reference];
     FIRDatabaseReference *spotRef = [fbDataService.ref child:@"runs"];
     
-    [spotRef observeEventType:FIRDataEventTypeChildAdded
-                    withBlock:^(FIRDataSnapshot *snapshot) {
-                        
-                        NSLog(@"Snapshot: %@", snapshot.value);
-                        
-                        Run *run = [[Run alloc]initRun:[snapshot.value[@"duration"] intValue] distance:[snapshot.value[@"distance"] floatValue] date:snapshot.value[@"date"]];
-
-                        NSLog(@"RUN: %@", run);
-                        
-                        [_runArray addObject:run];
+    [spotRef observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot) {
+        
+        Run *run = [[Run alloc]initRun:
+                    [snapshot.value[@"duration"] intValue]
+                    distance:[snapshot.value[@"distance"] floatValue]
+                    date:snapshot.value[@"date"]];
+        
+        [_runArray addObject:run];
+        [_runTableView reloadData];
 
         }];
 }
 
-- (IBAction)pressButton:(id)sender {
+-(NSString *)formatRunTime:(int)runTime {
+    int seconds2 = runTime % 60;
+    int minutes2 = (runTime / 60) % 60;
+    int hours2 = (runTime / 3600);
+    NSString *formattedTime = [NSString stringWithFormat:@"%02ih:%02im:%02is", hours2, minutes2, seconds2];
     
-    [self queryRunsFromFirebase];
+    return formattedTime;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [_runArray count];
+}
+
+-(RunTableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    RunTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"runCell" forIndexPath:indexPath];
+    
+    Run *run = [_runArray objectAtIndex:indexPath.row];
+    
+    cell.dateLabel.text = run.date;
+    
+    cell.durationLabel.text = [NSString stringWithFormat:@"Duration: %@", [self formatRunTime:run.duration]];
+    cell.distanceLabel.text = [NSString stringWithFormat:@"Distance: %.2f", run.distance];
+    
+    return cell;
     
 }
 
