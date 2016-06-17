@@ -7,15 +7,15 @@
 //
 
 @import FirebaseAuth;
-#import "LoginSignUpViewController.h"
+#import "LoginViewController.h"
 
-@interface LoginSignUpViewController ()
+@interface LoginViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *emailTF;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTF;
 
 @end
 
-@implementation LoginSignUpViewController
+@implementation LoginViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -38,6 +38,19 @@
             NSLog(@"Please sign in with your email and password");
         }
     }];
+}
+
+-(void)signUpAlertView {
+    UIAlertController *alertController =[UIAlertController
+                                         alertControllerWithTitle:@"Welcome!"
+                                         message:@"Please sign up with an email and password."
+                                         preferredStyle:UIAlertControllerStyleAlert];
+    
+    UITextField *email = alertController.textFields.firstObject;
+    UITextField *password = alertController.textFields.lastObject;
+    
+    
+    
 }
 
 - (IBAction)loginButtonPressed:(id)sender {

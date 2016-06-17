@@ -9,7 +9,8 @@
 /* Begin PBXBuildFile section */
 		432610D01D12F652008A8E2F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 432610CF1D12F652008A8E2F /* GoogleService-Info.plist */; };
 		432610D31D1433AE008A8E2F /* RunTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 432610D21D1433AE008A8E2F /* RunTableViewCell.m */; };
-		432610D71D143F5E008A8E2F /* LoginSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 432610D61D143F5E008A8E2F /* LoginSignUpViewController.m */; };
+		432610D71D143F5E008A8E2F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 432610D61D143F5E008A8E2F /* LoginViewController.m */; };
+		432610DA1D146D83008A8E2F /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 432610D91D146D83008A8E2F /* SignUpViewController.m */; };
 		43D7D1A31D0F0C230087EE80 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D7D1A21D0F0C230087EE80 /* main.m */; };
 		43D7D1A61D0F0C230087EE80 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D7D1A51D0F0C230087EE80 /* AppDelegate.m */; };
 		43D7D1AC1D0F0C230087EE80 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43D7D1AA1D0F0C230087EE80 /* Main.storyboard */; };
@@ -29,8 +30,10 @@
 		432610CF1D12F652008A8E2F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		432610D11D1433AE008A8E2F /* RunTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RunTableViewCell.h; sourceTree = "<group>"; };
 		432610D21D1433AE008A8E2F /* RunTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RunTableViewCell.m; sourceTree = "<group>"; };
-		432610D51D143F5E008A8E2F /* LoginSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginSignUpViewController.h; sourceTree = "<group>"; };
-		432610D61D143F5E008A8E2F /* LoginSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginSignUpViewController.m; sourceTree = "<group>"; };
+		432610D51D143F5E008A8E2F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		432610D61D143F5E008A8E2F /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		432610D81D146D83008A8E2F /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
+		432610D91D146D83008A8E2F /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
 		43D7D19E1D0F0C230087EE80 /* RunnerApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RunnerApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D7D1A21D0F0C230087EE80 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		43D7D1A41D0F0C230087EE80 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -133,8 +136,10 @@
 		43D7D1C01D0F354E0087EE80 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				432610D51D143F5E008A8E2F /* LoginSignUpViewController.h */,
-				432610D61D143F5E008A8E2F /* LoginSignUpViewController.m */,
+				432610D51D143F5E008A8E2F /* LoginViewController.h */,
+				432610D61D143F5E008A8E2F /* LoginViewController.m */,
+				432610D81D146D83008A8E2F /* SignUpViewController.h */,
+				432610D91D146D83008A8E2F /* SignUpViewController.m */,
 				43D7D1BA1D0F35360087EE80 /* MapViewController.h */,
 				43D7D1BB1D0F35360087EE80 /* MapViewController.m */,
 				43D7D1BD1D0F35460087EE80 /* LeaderboardViewController.h */,
@@ -284,9 +289,10 @@
 				43D7D1BC1D0F35360087EE80 /* MapViewController.m in Sources */,
 				43D7D1A61D0F0C230087EE80 /* AppDelegate.m in Sources */,
 				87FB51131D1040D400FC19A7 /* Run.m in Sources */,
-				432610D71D143F5E008A8E2F /* LoginSignUpViewController.m in Sources */,
+				432610D71D143F5E008A8E2F /* LoginViewController.m in Sources */,
 				432610D31D1433AE008A8E2F /* RunTableViewCell.m in Sources */,
 				43D7D1BF1D0F35460087EE80 /* LeaderboardViewController.m in Sources */,
+				432610DA1D146D83008A8E2F /* SignUpViewController.m in Sources */,
 				43D7D1A31D0F0C230087EE80 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,5 +1,5 @@
 //
-//  LoginSignUpViewController.h
+//  SignUpViewController.h
 //  RunnerApp
 //
 //  Created by DetroitLabs on 6/17/16.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LoginSignUpViewController : UIViewController
+@interface SignUpViewController : UIViewController
 
 @end
