@@ -20,6 +20,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self validateCurrentUser];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -28,12 +30,12 @@
 }
 
 -(void)validateCurrentUser {
-    [[FIRAuth auth] addAuthStateDidChangeListener:^(FIRAuth *_Nonnull auth,
-                                                    FIRUser *_Nullable user) {
+    [[FIRAuth auth] addAuthStateDidChangeListener:^(FIRAuth *auth,
+                                                    FIRUser *user) {
         if (user != nil) {
             [self performSegueWithIdentifier:@"enterAppSegue" sender:self];
         } else {
-            // No user is signed in.
+            NSLog(@"Please sign in with your email and password");
         }
     }];
 }
@@ -42,6 +44,9 @@
     
 }
 
+- (IBAction)signUpButtonPressed:(id)sender {
+    
+}
 
 
 @end
