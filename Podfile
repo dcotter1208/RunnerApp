@@ -5,6 +5,7 @@ target 'RunnerApp' do
 
 pod 'Firebase'
 pod 'Firebase/Database'
+pod 'Firebase/Auth'
 
   # Uncomment this line if you're using Swift or would like to use dynamic frameworks
   # use_frameworks!
