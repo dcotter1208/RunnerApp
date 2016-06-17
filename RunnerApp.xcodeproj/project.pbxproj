@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		432610D01D12F652008A8E2F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 432610CF1D12F652008A8E2F /* GoogleService-Info.plist */; };
+		432610D31D1433AE008A8E2F /* RunTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 432610D21D1433AE008A8E2F /* RunTableViewCell.m */; };
 		43D7D1A31D0F0C230087EE80 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D7D1A21D0F0C230087EE80 /* main.m */; };
 		43D7D1A61D0F0C230087EE80 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D7D1A51D0F0C230087EE80 /* AppDelegate.m */; };
 		43D7D1AC1D0F0C230087EE80 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43D7D1AA1D0F0C230087EE80 /* Main.storyboard */; };
@@ -25,6 +26,8 @@
 /* Begin PBXFileReference section */
 		3907623E59578E0C6CE89D69 /* Pods-RunnerApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RunnerApp/Pods-RunnerApp.debug.xcconfig"; sourceTree = "<group>"; };
 		432610CF1D12F652008A8E2F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		432610D11D1433AE008A8E2F /* RunTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RunTableViewCell.h; sourceTree = "<group>"; };
+		432610D21D1433AE008A8E2F /* RunTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RunTableViewCell.m; sourceTree = "<group>"; };
 		43D7D19E1D0F0C230087EE80 /* RunnerApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RunnerApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D7D1A21D0F0C230087EE80 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		43D7D1A41D0F0C230087EE80 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -122,6 +125,8 @@
 				43D7D1BB1D0F35360087EE80 /* MapViewController.m */,
 				43D7D1BD1D0F35460087EE80 /* LeaderboardViewController.h */,
 				43D7D1BE1D0F35460087EE80 /* LeaderboardViewController.m */,
+				432610D11D1433AE008A8E2F /* RunTableViewCell.h */,
+				432610D21D1433AE008A8E2F /* RunTableViewCell.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -266,6 +271,7 @@
 				43D7D1BC1D0F35360087EE80 /* MapViewController.m in Sources */,
 				43D7D1A61D0F0C230087EE80 /* AppDelegate.m in Sources */,
 				87FB51131D1040D400FC19A7 /* Run.m in Sources */,
+				432610D31D1433AE008A8E2F /* RunTableViewCell.m in Sources */,
 				43D7D1BF1D0F35460087EE80 /* LeaderboardViewController.m in Sources */,
 				43D7D1A31D0F0C230087EE80 /* main.m in Sources */,
 			);
