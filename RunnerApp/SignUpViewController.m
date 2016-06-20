@@ -35,10 +35,7 @@
             } else if (error.code == 17020) {
                 [self signUpFailedAlertView:@"Sign Up Failed" message:@"Please check your network and try again."];
             }
-            NSLog(@"error: %@", error.description);
-            NSLog(@"CODE: %lu", error.code);
         }
-        NSLog(@"User Email: %@", user.email);
      }];
 }
 
@@ -49,6 +46,13 @@
     BOOL result = [emailTest evaluateWithObject:email];
     
     return result;
+}
+
+-(BOOL)validatePassword:(NSString *)password {
+    NSString    *regex     = @"^(?=.*[a-z])(?=.*\\d)[a-z\\d]*$";//@"^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]*$";//Both will work
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
+    BOOL isValidPassword = [predicate evaluateWithObject:password];
+    return isValidPassword;
 }
 
 -(void)signUpFailedAlertView:(NSString *)title message:(NSString *)message {
@@ -65,11 +69,18 @@
 }
 
 - (IBAction)signUpPressed:(id)sender {
-    
+        //email valid but password fields don't match
     if ([self validateEmail:_emailTF.text] && ![_passwordTF.text isEqualToString:_repeatPasswordTF.text]) {
-        [self signUpFailedAlertView:@"Sign Up Failed" message:@"Passwords don't match"];
+        [self signUpFailedAlertView:@"Sign Up Failed" message:@"Please make sure your passwords match."];
+        //email is not valid but password fields match
     }else if (![self validateEmail:_emailTF.text] && [_passwordTF.text isEqualToString:_repeatPasswordTF.text]) {
-        [self signUpFailedAlertView:@"Sign Up Failed" message:@"Please make sure you put in a valid email"];
+        [self signUpFailedAlertView:@"Sign Up Failed" message:@"Please make sure you put in a valid email."];
+        //BOTH email and password are not validated
+    } else if (![self validateEmail:_emailTF.text] && ![self validatePassword:_passwordTF.text]) {
+        [self signUpFailedAlertView:@"Sign Up Failed" message:@"Your email and password aren't valid"];
+        //email is valid but password is not.
+    } else if ([self validateEmail:_emailTF.text] && ![self validatePassword:_passwordTF.text]) {
+        [self signUpFailedAlertView:@"Sign Up Failed" message:@"password must contain letters and numbers"];
     } else {
         [self signUpUserWithFirebase];
     }
