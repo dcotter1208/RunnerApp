@@ -8,6 +8,7 @@
 
 @import Firebase;
 @import FirebaseDatabase;
+@import FirebaseAuth;
 #import "MapViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import "Run.h"
@@ -58,6 +59,7 @@ MKCoordinateRegion userLocation;
 
 
 - (void)viewDidLoad {
+    [self.navigationController setNavigationBarHidden:true];
     [super viewDidLoad];
     _accumulatedDistance = 0;
     //NSLog(@"weather querry returns: %@", weatherQuerryResponse);
@@ -218,6 +220,8 @@ MKCoordinateRegion userLocation;
         }
     }
 }
+
+
 
 
 @end
