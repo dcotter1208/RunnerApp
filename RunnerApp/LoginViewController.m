@@ -52,7 +52,6 @@
         }];
 }
 
-
 - (IBAction)loginButtonPressed:(id)sender {
 
     [self validateUserLoginInfo];
