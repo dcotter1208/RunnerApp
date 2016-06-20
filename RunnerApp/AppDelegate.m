@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 @import Firebase;
+@import FirebaseAuth;
 
 @interface AppDelegate ()
 
@@ -18,8 +19,25 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+    self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
     [FIRApp configure];
-
+    
+    [[FIRAuth auth] addAuthStateDidChangeListener:^(FIRAuth *auth,
+                                                    FIRUser *user) {
+        
+        if (user != nil) {
+            
+            // Show the Initial MapSpotMapVC
+            self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"InitialTabController"];
+        } else {
+            // Login
+            self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginVC"];
+        }
+        [self.window makeKeyAndVisible];
+    }];
+    
     return YES;
 }
 

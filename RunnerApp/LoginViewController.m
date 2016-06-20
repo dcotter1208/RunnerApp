@@ -8,6 +8,7 @@
 
 @import FirebaseAuth;
 #import "LoginViewController.h"
+#import "MapViewController.h"
 
 @interface LoginViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *emailTF;
@@ -19,24 +20,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self isUserCurrentlyLoggedIn];
-    
+
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
--(void)isUserCurrentlyLoggedIn {
-    [[FIRAuth auth] addAuthStateDidChangeListener:^(FIRAuth *auth,
-                                                    FIRUser *user) {
-        if (user != nil) {
-            [self performSegueWithIdentifier:@"enterAppSegue" sender:self];
-        } else {
-            NSLog(@"Please sign in with your email and password");
-        }
-    }];
 }
 
 -(void)loginFailedAlertView {
@@ -62,6 +51,7 @@
              }
         }];
 }
+
 
 - (IBAction)loginButtonPressed:(id)sender {
 
