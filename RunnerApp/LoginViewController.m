@@ -19,6 +19,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //WILL DELETE THIS after authentication is fixed...
+    [self performSegueWithIdentifier:@"enterAppSegue" sender:self];
+    
     [self isUserCurrentlyLoggedIn];
     
 }

@@ -12,6 +12,8 @@
 #import <CoreLocation/CoreLocation.h>
 #import "Run.h"
 
+//weather key for Weather Underground (Wunderground): ed2eda62a0bc8673
+
 @interface MapViewController ()
 //Outlets
 @property (weak, nonatomic) IBOutlet UIButton *startAndPauseButton;
@@ -25,18 +27,55 @@
 
 @end
 
+NSString *weatherQuerry = @"http://api.wunderground.com/api/ed2eda62a0bc8673/conditions/q/48138.json";
+//CFHTTPMessageRef http
+UIWebView *webView;
+NSHTTPURLResponse *weatherQuerryResponse;
+
 CLLocation *newLocation;
 MKCoordinateRegion userLocation;
 @implementation MapViewController
 
+
+
+
+
+//- (void)viewDidAppear:(BOOL)animated {
+//    NSURL *u = [NSURL URLWithString:@"http://www.google.de"];
+//    NSURLRequest *r = [NSURLRequest requestWithURL:u];
+//    [self.webView loadRequest:r];
+//}
+//
+//- (void)webViewDidFinishLoad:(UIWebView *)webView {
+//    NSCachedURLResponse *resp = [[NSURLCache sharedURLCache] cachedResponseForRequest:webView.request];
+//    NSLog(@"%@",[(NSHTTPURLResponse*)resp.response allHeaderFields]);
+//}
+
+
+
+
+
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     _accumulatedDistance = 0;
+    //NSLog(@"weather querry returns: %@", weatherQuerryResponse);
+    
+    
+    NSURL *u = [NSURL URLWithString:@"http://api.wunderground.com/api/ed2eda62a0bc8673/conditions/q/48138.json"];
+    NSURLRequest *r = [NSURLRequest requestWithURL:u];
+    [webView loadRequest:r];
+    NSCachedURLResponse *resp = [[NSURLCache sharedURLCache] cachedResponseForRequest:webView.request];
+    NSLog(@"==========================================================================================================================");
+    NSLog(@"URL is: %@", u);
+    NSLog(@"URL Request is: %@",r);
+    NSLog(@"URL Response is: %@",resp);
+//    NSLog(@"URL Response is: %@",[(NSHTTPURLResponse*)resp.response allHeaderFields]);
+    NSLog(@"URL Response is: %@",[(NSHTTPURLResponse*)resp.response allHeaderFields]);
 
     [self mapSetup];
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
