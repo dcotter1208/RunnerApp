@@ -8,6 +8,7 @@
 
 @import Firebase;
 @import FirebaseDatabase;
+@import FirebaseAuth;
 #import "MapViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import "Run.h"
@@ -30,6 +31,7 @@ MKCoordinateRegion userLocation;
 @implementation MapViewController
 
 - (void)viewDidLoad {
+    [self.navigationController setNavigationBarHidden:true];
     [super viewDidLoad];
     
     _accumulatedDistance = 0;
@@ -179,6 +181,8 @@ MKCoordinateRegion userLocation;
         }
     }
 }
+
+
 
 
 @end
