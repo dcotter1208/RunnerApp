@@ -7,6 +7,7 @@
 //
 @import FirebaseAuth;
 #import "SignUpViewController.h"
+#import "Themer.h"
 
 @interface SignUpViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *emailTF;
@@ -19,7 +20,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    Themer *mvcTheme = [[Themer alloc]init];
+    [mvcTheme themeButtons: _buttons];
+    [mvcTheme themeTextFields: _textFields];
 }
 
 - (void)didReceiveMemoryWarning {

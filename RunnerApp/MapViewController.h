@@ -16,4 +16,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *durationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
 
+//IBOutletCollections
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
+@property (strong, nonatomic) IBOutletCollection(MKMapView) NSArray *maps;
+@property (strong, nonatomic) IBOutletCollection (UILabel) NSArray *labels;
+
 @end

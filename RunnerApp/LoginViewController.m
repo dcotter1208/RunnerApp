@@ -9,10 +9,12 @@
 @import FirebaseAuth;
 #import "LoginViewController.h"
 #import "MapViewController.h"
+#import "Themer.h"
 
 @interface LoginViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *emailTF;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTF;
+@property (strong, nonatomic) IBOutlet UILabel *noAccountLabel;
 
 @end
 
@@ -20,7 +22,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
+    Themer *mvcTheme = [[Themer alloc]init];
+    [mvcTheme themeButtons: _buttons];
+    [mvcTheme themeLabels: _labels];
+    [mvcTheme themeTextFields: _textFields];
+    
+    _noAccountLabel.font = [UIFont systemFontOfSize:15];
 }
 
 - (void)didReceiveMemoryWarning {
