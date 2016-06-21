@@ -22,17 +22,11 @@
                                 <rect key="frame" x="-4" y="0.0" width="328" height="519"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </mapView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kLR-K9-Xwb">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Time:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kLR-K9-Xwb">
                                 <rect key="frame" x="4" y="382" width="113" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Distance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J34-yx-yux">
-                                <rect key="frame" x="4" y="423" width="117" height="36"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="highlightedColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="calibratedRGB"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T2D-he-6Vl">
                                 <rect key="frame" x="162" y="475" width="150" height="36"/>
@@ -62,6 +56,12 @@
                                     <action selector="startAndPauseButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="a3F-uD-OFw"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Distance (miles):" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J34-yx-yux">
+                                <rect key="frame" x="4" y="426" width="222" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="highlightedColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="calibratedRGB"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -242,7 +242,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oIn-0N-NSx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="761" y="346"/>
+            <point key="canvasLocation" x="1293" y="346"/>
         </scene>
         <!--InitialTabBarController-->
         <scene sceneID="LL0-9V-4xY">
@@ -266,7 +266,7 @@
         <!--Login View Controller-->
         <scene sceneID="0TB-hk-E93">
             <objects>
-                <viewController storyboardIdentifier="LoginVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fep-dl-UFl" customClass="LoginViewController" sceneMemberID="viewController">
+                <viewController id="fep-dl-UFl" customClass="LoginViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="b88-Tk-0SI"/>
                         <viewControllerLayoutGuide type="bottom" id="t3d-2K-tbv"/>
@@ -316,7 +316,7 @@
                                 </state>
                                 <connections>
                                     <action selector="signUpButtonPressed:" destination="fep-dl-UFl" eventType="touchUpInside" id="40y-vo-zLO"/>
-                                    <segue destination="G8o-GP-vgj" kind="modal" id="01g-Zb-K4C"/>
+                                    <segue destination="G8o-GP-vgj" kind="push" id="01g-Zb-K4C"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -348,6 +348,24 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VAL-Ua-tQq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="899" y="346"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="wdu-n2-BUm">
+            <objects>
+                <navigationController storyboardIdentifier="LoginVCNavController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="45Z-Dv-yUF" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="VdE-9M-cT1">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="fep-dl-UFl" kind="relationship" relationship="rootViewController" id="YH7-Gr-iZt"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XOv-q5-0LH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="367" y="346"/>
         </scene>
