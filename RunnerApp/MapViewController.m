@@ -48,7 +48,6 @@ MKCoordinateRegion userLocation;
     [super didReceiveMemoryWarning];
 }
 
-#pragma mark Timer Methods
 
 -(void)startTimer {
     _timer = [NSTimer scheduledTimerWithTimeInterval:(1.0)
@@ -58,10 +57,61 @@ MKCoordinateRegion userLocation;
                                              repeats:YES];
 }
 
+
+-(void)alertMessage:(NSString*)message {
+    UIAlertController* alert = [UIAlertController
+                                alertControllerWithTitle:@"Alert"
+                                message:message
+                                preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* saveAction = [UIAlertAction
+                                 actionWithTitle:@"Save" style:UIAlertActionStyleDefault
+                                 handler:^(UIAlertAction * action) {
+                                     [self saveRun];
+                                 }];
+    UIAlertAction* discardAction = [UIAlertAction
+                                    actionWithTitle:@"Discard" style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action) {
+                                        [self discardRun];
+                                    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    
+    [alert addAction:saveAction];
+    [alert addAction:discardAction];
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+-(void)saveRun {
+    [_startAndPauseButton setTitle:@"Start" forState:UIControlStateNormal];
+    [_timer invalidate];
+    
+    //Grab the current date and turn it into a string.
+    NSDate* now = [NSDate date];
+    NSString *timeStamp = [self formattedDate:now];
+    
+    Run *run = [[Run alloc]initWithRunner:[FIRAuth auth].currentUser.uid duration:_seconds distance:_accumulatedDistance date:timeStamp];
+    [self saveRunToFirebase:run];
+    
+    //will update conditionally based on dialog in future -- alert field
+    _accumulatedDistance = 0;
+}
+
+-(void)discardRun {
+    [_startAndPauseButton setTitle:@"Start" forState:UIControlStateNormal];
+    [_timer invalidate];
+    
+    _seconds = 0;
+    _accumulatedDistance = 0;
+    _durationLabel.text = [NSString stringWithFormat:@"Time:"];
+    _distanceLabel.text = [NSString stringWithFormat:@"Distance (miles):"];
+}
+
 - (void)eachSecond {
     _seconds++;
     _accumulatedDistance += _distance;
-    NSLog(@"Accumulated Distance: %@", [self formatRunDistance:_accumulatedDistance]);
+    //NSLog(@"Accumulated Distance: %@", [self formatRunDistance:_accumulatedDistance]);
     _durationLabel.text = [NSString stringWithFormat:@"Time: %@", [self formatRunTime:_seconds]];
     _distanceLabel.text = [NSString stringWithFormat:@"Distance (miles): %@", [self formatRunDistance:_accumulatedDistance]];
 }
@@ -108,7 +158,7 @@ MKCoordinateRegion userLocation;
     int minutes2 = (runTime / 60) % 60;
     int hours2 = (runTime / 3600);
     NSString *formattedTime = [NSString stringWithFormat:@"%02i:%02i:%02i", hours2, minutes2, seconds2];
-    
+    //NSLog(@"time formatter");
     return formattedTime;
 }
 
