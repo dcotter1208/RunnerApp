@@ -12,11 +12,13 @@
 #import "MapViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import "Run.h"
+#import "Themer.h"
 
 @interface MapViewController ()
 //Outlets
 @property (weak, nonatomic) IBOutlet UIButton *startAndPauseButton;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UIButton *stopButton;
 
 //Properties
 @property (nonatomic, strong) NSMutableArray *recordedLocations;
@@ -37,12 +39,28 @@ MKCoordinateRegion userLocation;
     _accumulatedDistance = 0;
 
     [self mapSetup];
+    [self initDesignElements];
+    
+    Themer *mvcTheme = [[Themer alloc]init];
+    [mvcTheme themeButtons: _buttons];
+    [mvcTheme themeLabels: _labels];
+    [mvcTheme themeMaps: _maps];
+    
+    _startAndPauseButton.backgroundColor = [UIColor colorWithRed:39.0f/255.0f green:196.0f/255.0f blue:36.0f/255.0f alpha:1.0];
+    _stopButton.backgroundColor = [UIColor redColor];
 }
 
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
+
+-(void)initDesignElements {
+    CGRect screenRect = {{0, [[UIScreen mainScreen] bounds].size.height-170}, {CGRectGetWidth(self.view.bounds), 170}};
+    UIView* coverView = [[UIView alloc] initWithFrame:screenRect];
+    coverView.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.6];
+    [self.view insertSubview:coverView atIndex:1];}
+
 
 - (IBAction)startAndPauseButtonPressed:(id)sender {
 
@@ -142,6 +160,7 @@ MKCoordinateRegion userLocation;
 }
 
 -(void)mapSetup {
+    //check constraints on this as they seem to be causing map size errors on phones > 5
     [_mapView setDelegate:self];
     [_mapView setShowsUserLocation:true];
     [self getUserLocation];

@@ -23,6 +23,7 @@
 		73051B8A06E7FA0F0F81A8D2 /* libPods-RunnerApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA6307FEB396F789D51E44D /* libPods-RunnerApp.a */; };
 		87F1E21A1D0F3B1700031D98 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87F1E2191D0F3B1700031D98 /* CoreLocation.framework */; };
 		87FB51131D1040D400FC19A7 /* Run.m in Sources */ = {isa = PBXBuildFile; fileRef = 87FB51121D1040D400FC19A7 /* Run.m */; };
+		D4837A8C1D18429A00715CB9 /* Themer.m in Sources */ = {isa = PBXBuildFile; fileRef = D4837A8B1D18429A00715CB9 /* Themer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,8 @@
 		87FB51111D1040D400FC19A7 /* Run.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Run.h; sourceTree = "<group>"; };
 		87FB51121D1040D400FC19A7 /* Run.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Run.m; sourceTree = "<group>"; };
 		9CA6307FEB396F789D51E44D /* libPods-RunnerApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RunnerApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4837A8A1D18429A00715CB9 /* Themer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Themer.h; sourceTree = "<group>"; };
+		D4837A8B1D18429A00715CB9 /* Themer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Themer.m; sourceTree = "<group>"; };
 		EB05CA194C02ABED4E76D989 /* Pods-RunnerApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-RunnerApp/Pods-RunnerApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -84,6 +87,8 @@
 				432610D21D1433AE008A8E2F /* RunTableViewCell.m */,
 				87FB51111D1040D400FC19A7 /* Run.h */,
 				87FB51121D1040D400FC19A7 /* Run.m */,
+				D4837A8A1D18429A00715CB9 /* Themer.h */,
+				D4837A8B1D18429A00715CB9 /* Themer.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -293,6 +298,7 @@
 				432610D31D1433AE008A8E2F /* RunTableViewCell.m in Sources */,
 				43D7D1BF1D0F35460087EE80 /* LeaderboardViewController.m in Sources */,
 				432610DA1D146D83008A8E2F /* SignUpViewController.m in Sources */,
+				D4837A8C1D18429A00715CB9 /* Themer.m in Sources */,
 				43D7D1A31D0F0C230087EE80 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
