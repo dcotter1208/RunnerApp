@@ -28,7 +28,6 @@
                                                     FIRUser *user) {
         
         if (user != nil) {
-            
             // Show the Initial MapSpotMapVC
             self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"InitialTabController"];
         } else {
