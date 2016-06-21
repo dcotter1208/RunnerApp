@@ -48,6 +48,36 @@ MKCoordinateRegion userLocation;
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark Save Run Options Methods
+
+-(void)saveRun {
+    [_startAndPauseButton setTitle:@"Start" forState:UIControlStateNormal];
+    [_timer invalidate];
+    
+    //Grab the current date and turn it into a string.
+    NSDate* now = [NSDate date];
+    NSString *timeStamp = [self formattedDate:now];
+    
+    Run *run = [[Run alloc]initWithRunner:[FIRAuth auth].currentUser.uid duration:_seconds distance:_accumulatedDistance date:timeStamp];
+    
+    [self saveRunToFirebase:run];
+    
+    //will update conditionally based on dialog in future -- alert field
+    _accumulatedDistance = 0;
+}
+
+-(void)discardRun {
+    [_startAndPauseButton setTitle:@"Start" forState:UIControlStateNormal];
+    [_timer invalidate];
+    
+    _seconds = 0;
+    _accumulatedDistance = 0;
+    _durationLabel.text = [NSString stringWithFormat:@"Time:"];
+    _distanceLabel.text = [NSString stringWithFormat:@"Distance (miles):"];
+}
+
+
+#pragma mark Timer Methods
 
 -(void)startTimer {
     _timer = [NSTimer scheduledTimerWithTimeInterval:(1.0)
@@ -57,6 +87,32 @@ MKCoordinateRegion userLocation;
                                              repeats:YES];
 }
 
+- (void)eachSecond {
+    _seconds++;
+    _accumulatedDistance += _distance;
+    //NSLog(@"Accumulated Distance: %@", [self formatRunDistance:_accumulatedDistance]);
+    _durationLabel.text = [NSString stringWithFormat:@"Time: %@", [self formatRunTime:_seconds]];
+    _distanceLabel.text = [NSString stringWithFormat:@"Distance (miles): %@", [self formatRunDistance:_accumulatedDistance]];
+}
+
+
+#pragma mark Save To Firebase
+
+-(void)saveRunToFirebase:(Run *)run {
+    float miles = run.distance/1609.344;
+    
+    FIRDatabaseReference *fbDataService = [[FIRDatabase database] reference];
+    
+    FIRDatabaseReference *runsRef = [fbDataService child:@"runs"].childByAutoId;
+    
+    NSDictionary *runToAdd = @{@"runner": run.runner, @"duration": [NSNumber numberWithInt:run.duration],
+                               @"distance": [NSNumber numberWithFloat:miles],
+                               @"date": run.date};
+    
+    [runsRef setValue:runToAdd];
+}
+
+#pragma mark Helper Methods
 
 -(void)alertMessage:(NSString*)message {
     UIAlertController* alert = [UIAlertController
@@ -82,57 +138,6 @@ MKCoordinateRegion userLocation;
     [alert addAction:cancelAction];
     [self presentViewController:alert animated:YES completion:nil];
 }
-
--(void)saveRun {
-    [_startAndPauseButton setTitle:@"Start" forState:UIControlStateNormal];
-    [_timer invalidate];
-    
-    //Grab the current date and turn it into a string.
-    NSDate* now = [NSDate date];
-    NSString *timeStamp = [self formattedDate:now];
-    
-    Run *run = [[Run alloc]initWithRunner:[FIRAuth auth].currentUser.uid duration:_seconds distance:_accumulatedDistance date:timeStamp];
-    [self saveRunToFirebase:run];
-    
-    //will update conditionally based on dialog in future -- alert field
-    _accumulatedDistance = 0;
-}
-
--(void)discardRun {
-    [_startAndPauseButton setTitle:@"Start" forState:UIControlStateNormal];
-    [_timer invalidate];
-    
-    _seconds = 0;
-    _accumulatedDistance = 0;
-    _durationLabel.text = [NSString stringWithFormat:@"Time:"];
-    _distanceLabel.text = [NSString stringWithFormat:@"Distance (miles):"];
-}
-
-- (void)eachSecond {
-    _seconds++;
-    _accumulatedDistance += _distance;
-    //NSLog(@"Accumulated Distance: %@", [self formatRunDistance:_accumulatedDistance]);
-    _durationLabel.text = [NSString stringWithFormat:@"Time: %@", [self formatRunTime:_seconds]];
-    _distanceLabel.text = [NSString stringWithFormat:@"Distance (miles): %@", [self formatRunDistance:_accumulatedDistance]];
-}
-
-#pragma mark Save To Firebase
-
--(void)saveRunToFirebase:(Run *)run {
-    float miles = run.distance/1609.344;
-    
-    FIRDatabaseReference *fbDataService = [[FIRDatabase database] reference];
-    
-    FIRDatabaseReference *runsRef = [fbDataService child:@"runs"].childByAutoId;
-    
-    NSDictionary *runToAdd = @{@"runner": run.runner, @"duration": [NSNumber numberWithInt:run.duration],
-                               @"distance": [NSNumber numberWithFloat:miles],
-                               @"date": run.date};
-    
-    [runsRef setValue:runToAdd];
-}
-
-#pragma mark Helper Methods
 
 -(void)customUISetup {
     Themer *mvcTheme = [[Themer alloc]init];
@@ -224,6 +229,12 @@ MKCoordinateRegion userLocation;
     }
 }
 
+
+- (IBAction)stopButtonPressed:(id)sender {
+    [self alertMessage:@"Are you ready to save your run?"];
+}
+
+
 - (IBAction)startAndPauseButtonPressed:(id)sender {
 
     //START
@@ -249,22 +260,5 @@ MKCoordinateRegion userLocation;
     }
     
 }
-
-- (IBAction)stopButtonPressed:(id)sender {
-    [_startAndPauseButton setTitle:@"Start" forState:UIControlStateNormal];
-    [_timer invalidate];
-    
-    //Grab the current date and turn it into a string.
-    NSDate* now = [NSDate date];
-    NSString *timeStamp = [self formattedDate:now];
-    
-    Run *run = [[Run alloc]initWithRunner:[FIRAuth auth].currentUser.uid duration:_seconds distance:_accumulatedDistance date:timeStamp];
-    
-    [self saveRunToFirebase:run];
-    
-    //will update conditionally based on dialog in future -- alert field
-    _accumulatedDistance = 0;
-}
-
 
 @end
