@@ -48,8 +48,10 @@
     return result;
 }
 
+//Change this so the password must be > than 6 & < 20 Characters, made up of letters and numbers and contain at least one special character. It should also be case sensitive.
+
 -(BOOL)validatePassword:(NSString *)password {
-    NSString    *regex     = @"^(?=.*[a-z])(?=.*\\d)[a-z\\d]*$";//@"^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]*$";//Both will work
+    NSString    *regex = @"^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]*$";
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
     BOOL isValidPassword = [predicate evaluateWithObject:password];
     return isValidPassword;
@@ -69,6 +71,7 @@
 }
 
 - (IBAction)signUpPressed:(id)sender {
+    
         //email valid but password fields don't match
     if ([self validateEmail:_emailTF.text] && ![_passwordTF.text isEqualToString:_repeatPasswordTF.text]) {
         [self signUpFailedAlertView:@"Sign Up Failed" message:@"Please make sure your passwords match."];
