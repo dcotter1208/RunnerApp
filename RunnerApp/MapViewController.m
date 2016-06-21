@@ -75,7 +75,7 @@ MKCoordinateRegion userLocation;
     
     FIRDatabaseReference *runsRef = [fbDataService child:@"runs"].childByAutoId;
     
-    NSDictionary *runToAdd = @{@"duration": [NSNumber numberWithInt:run.duration],
+    NSDictionary *runToAdd = @{@"runner": run.runner, @"duration": [NSNumber numberWithInt:run.duration],
                                @"distance": [NSNumber numberWithFloat:miles],
                                @"date": run.date};
     
@@ -174,7 +174,6 @@ MKCoordinateRegion userLocation;
     }
 }
 
-
 - (IBAction)startAndPauseButtonPressed:(id)sender {
 
     //START
@@ -202,7 +201,6 @@ MKCoordinateRegion userLocation;
 }
 
 - (IBAction)stopButtonPressed:(id)sender {
-    //
     [_startAndPauseButton setTitle:@"Start" forState:UIControlStateNormal];
     [_timer invalidate];
     
@@ -210,7 +208,7 @@ MKCoordinateRegion userLocation;
     NSDate* now = [NSDate date];
     NSString *timeStamp = [self formattedDate:now];
     
-    Run *run = [[Run alloc]initRun:_seconds distance:_accumulatedDistance date:timeStamp];
+    Run *run = [[Run alloc]initWithRunner:[FIRAuth auth].currentUser.uid duration:_seconds distance:_accumulatedDistance date:timeStamp];
     
     [self saveRunToFirebase:run];
     

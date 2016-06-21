@@ -10,12 +10,11 @@
 
 @implementation Run
 
--(instancetype)initRun:(int)duration distance:(float)distance date:(NSString *)date
-{
+-(instancetype)initWithRunner:(NSString *)runner duration:(int)duration distance:(float)distance date:(NSString *)date {
     self = [super init];
     
-    if (self)
-    {
+    if (self) {
+        _runner = runner;
         _duration = duration;
         _distance = distance;
         _date = date;

@@ -31,8 +31,9 @@
 
 @property (nonatomic) int duration;
 @property (nonatomic) float distance;
-@property (nonatomic) NSString *date;
+@property (nonatomic, strong) NSString *date;
+@property (nonatomic, strong) NSString *runner;
 
--(instancetype)initRun:(int)duration distance:(float)distance date:(NSString *)date;
+-(instancetype)initWithRunner:(NSString *)runner duration:(int)duration distance:(float)distance date:(NSString *)date;
 
 @end
