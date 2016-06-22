@@ -9,6 +9,7 @@
 #import "LeaderboardViewController.h"
 #import "Run.h"
 #import "RunTableViewCell.h"
+@import FirebaseAuth;
 @import FirebaseDatabase;
 @import Firebase;
 
@@ -34,22 +35,16 @@
 }
 
 -(void)queryRunsFromFirebase {
-    FIRDatabaseReference *fbDataService = [[FIRDatabase database] reference];
-    FIRDatabaseReference *spotRef = [fbDataService.ref child:@"runs"];
-    
-    [spotRef observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
-    {
-        Run *run = [[Run alloc]initWithRunner:snapshot.value[@"runner"]
-                                     duration:[snapshot.value[@"duration"]intValue]
-                                     distance:[snapshot.value[@"distance"]floatValue]
-                                     date:snapshot.value[@"date"]
-                                     temperature:snapshot.value[@"temperature"]
-                                     humidity:snapshot.value[@"humidity"]
-                                     precipitation:snapshot.value[@"precipitation"]];
         
-        [_runArray addObject:run];
-        [_runTableView reloadData];
-        }];
+    FIRDatabaseReference *fbDataService = [[FIRDatabase database] reference];
+    FIRDatabaseReference *runsRef = [fbDataService.ref child:@"runs"];
+    FIRDatabaseQuery *currentUserRunHistory = [[runsRef queryOrderedByChild:@"runner"] queryEqualToValue:[FIRAuth auth].currentUser.uid];
+    
+    [currentUserRunHistory observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot) {
+        Run *run = [[Run alloc]initWithRunner:snapshot.value[@"runner"] duration: [snapshot.value[@"duration"] intValue] distance:[snapshot.value[@"distance"] floatValue] date:snapshot.value[@"date"]];
+            [_runArray addObject:run];
+            [_runTableView reloadData];
+    }];
 }
 
 -(NSString *)formatRunTime:(int)runTime {
