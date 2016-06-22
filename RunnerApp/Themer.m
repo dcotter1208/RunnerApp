@@ -16,7 +16,7 @@
     
     for (UIButton *btn in buttons) {
         //btn.titleLabel.font = [UIFont fontWithName:@"System" size:18.0];
-        btn.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+        btn.titleLabel.font = [UIFont boldSystemFontOfSize:20];
         [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         btn.layer.cornerRadius = 5;
         //btn.layer.masksToBounds = YES;
@@ -34,18 +34,19 @@
 
 -(void)themeLabels:(NSArray *)labels {
     for (UILabel *lbl in labels) {
-        lbl.font = [UIFont systemFontOfSize:18];
+        lbl.font = [UIFont systemFontOfSize:22];
         lbl.textColor = [UIColor blackColor];
     }
 }
 
 -(void)themeTextFields:(NSArray *)textFields {
     
-    for (UIButton *tf in textFields) {
+    for (UITextField *tf in textFields) {
+        tf.font = [UIFont systemFontOfSize:20];
         tf.layer.cornerRadius = 5;
         tf.layer.masksToBounds = YES;
         tf.layer.borderWidth = 1.0f;
-        tf.layer.borderColor = [[UIColor colorWithRed:200.0f/255.0f green:200.0f/255.0f blue:200.0f/255.0f alpha:1.0] CGColor];
+        tf.layer.borderColor = [[UIColor colorWithRed:190.0f/255.0f green:190.0f/255.0f blue:190.0f/255.0f alpha:1.0] CGColor];
     }
 }
 
