@@ -12,14 +12,16 @@
 #import "MapViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import "Run.h"
+<<<<<<< HEAD
 #import "Weather.h"
-#import "Themer.h"
 
 //==========================================================================================================
 //Weather add ==============================================================================================
 //==========================================================================================================
 @import WebKit;
 //weather key for Weather Underground (Wunderground): ed2eda62a0bc8673
+=======
+>>>>>>> master
 #import "Themer.h"
 
 @interface MapViewController ()
@@ -98,9 +100,9 @@ NSHTTPURLResponse *weatherQuerryResponse;
                     
                     // disptch_async updates my labels with the weather info when it is returned from the API / data provider.
                     dispatch_async(dispatch_get_main_queue(), ^{
-//                    self.temperatureLabel.text = [NSString stringWithFormat:@"  %@", _weather.temperature];
-//                    self.humidityLabel.text = [NSString stringWithFormat:@"  %@", _weather.humidity];
-//                    self.precipitationLabel.text = [NSString stringWithFormat:@"  %@", _weather.precipitation];
+                    self.temperatureLabel.text = [NSString stringWithFormat:@"  %@", _weather.temperature];
+                    self.humidityLabel.text = [NSString stringWithFormat:@"  %@", _weather.humidity];
+                    self.precipitationLabel.text = [NSString stringWithFormat:@"  %@", _weather.precipitation];
                     });
                 }
             }
@@ -117,7 +119,10 @@ NSHTTPURLResponse *weatherQuerryResponse;
     _accumulatedDistance = 0;
     
     [self mapSetup];
+<<<<<<< HEAD
     [self getWeatherInfo];
+=======
+>>>>>>> master
     [self initDesignElements];
     [self customUISetup];
 }
@@ -136,7 +141,12 @@ NSHTTPURLResponse *weatherQuerryResponse;
     NSDate* now = [NSDate date];
     NSString *timeStamp = [self formattedDate:now];
     
-    Run *run = [[Run alloc]initWithRunner:[FIRAuth auth].currentUser.uid duration:_seconds distance:_accumulatedDistance date:timeStamp temperature:_weather.temperature humidity:_weather.humidity precipitation:_weather.precipitation];
+<<<<<<< HEAD
+   // Run *run = [[Run alloc]initRun:_seconds distance:_accumulatedDistance date:timeStamp temperature:_weather.temperature humidity:_weather.humidity precipitation:_weather.precipitation];
+    Run *run = [[Run alloc]initWithRunner:[FIRAuth auth].currentUser.uid duration:_seconds distance:_accumulatedDistance date:timeStamp temperature:_weather.temperature humidity:_weather.humidity precipitation:_weather.precipitation]];
+=======
+    Run *run = [[Run alloc]initWithRunner:[FIRAuth auth].currentUser.uid duration:_seconds distance:_accumulatedDistance date:timeStamp];
+>>>>>>> master
     
     [self saveRunToFirebase:run];
     
@@ -172,6 +182,7 @@ NSHTTPURLResponse *weatherQuerryResponse;
     _distanceLabel.text = [NSString stringWithFormat:@"Distance (miles): %@", [self formatRunDistance:_accumulatedDistance]];
     _currentPaceLabel.text = [NSString stringWithFormat:@"Current Pace: %@", [self getCurrentPace]];
     _overallPaceLabel.text = [NSString stringWithFormat:@"Overall Pace: %@", [self getOverallPace]];
+<<<<<<< HEAD
 }
 
 #pragma mark Save To Firebase
@@ -183,18 +194,33 @@ NSHTTPURLResponse *weatherQuerryResponse;
     
     FIRDatabaseReference *runsRef = [fbDataService child:@"runs"].childByAutoId;
     
-    NSDictionary *runToAdd = @{
-                               @"duration": [NSNumber numberWithInt:run.duration],
+    NSDictionary *runToAdd = @{@"runner": run.runner, @"duration": [NSNumber numberWithInt:run.duration],
                                @"distance": [NSNumber numberWithFloat:miles],
-                               @"date": run.date,
-                               @"temperature": run.temperature,
-                               @"humidity": run.humidity,
-                               @"precipitation": run.precipitation,
-                               };
+                               @"date": run.date};
     
     [runsRef setValue:runToAdd];
 }
 
+=======
+}
+
+#pragma mark Save To Firebase
+
+-(void)saveRunToFirebase:(Run *)run {
+    float miles = run.distance/1609.344;
+    
+    FIRDatabaseReference *fbDataService = [[FIRDatabase database] reference];
+    
+    FIRDatabaseReference *runsRef = [fbDataService child:@"runs"].childByAutoId;
+    
+    NSDictionary *runToAdd = @{@"runner": run.runner, @"duration": [NSNumber numberWithInt:run.duration],
+                               @"distance": [NSNumber numberWithFloat:miles],
+                               @"date": run.date};
+    
+    [runsRef setValue:runToAdd];
+}
+
+>>>>>>> master
 #pragma mark Helper Methods
 
 -(void)alertMessage:(NSString*)message {
@@ -287,6 +313,28 @@ NSHTTPURLResponse *weatherQuerryResponse;
     return formattedRunDate;
 }
 
+<<<<<<< HEAD
+-(void)saveRunToFirebase:(Run *)run {
+    float miles = run.distance/1609.344;
+    
+    FIRDatabaseReference *fbDataService = [[FIRDatabase database] reference];
+    
+    FIRDatabaseReference *runsRef = [fbDataService child:@"runs"].childByAutoId;
+    
+    NSDictionary *runToAdd = @{
+                               @"duration": [NSNumber numberWithInt:run.duration],
+                               @"distance": [NSNumber numberWithFloat:miles],
+                               @"date": run.date,
+                               @"temperature": run.temperature,
+                               @"humidity": run.humidity,
+                               @"precipitation": run.precipitation,
+                               };
+
+    [runsRef setValue:runToAdd];
+}
+
+=======
+>>>>>>> master
 //Sets up the MapView.
 -(void)mapSetup {
     //check constraints on this as they seem to be causing map size errors on phones > 5
@@ -339,6 +387,15 @@ NSHTTPURLResponse *weatherQuerryResponse;
     [self alertMessage:@"Are you ready to save your run?"];
 }
 
+
+<<<<<<< HEAD
+=======
+- (IBAction)stopButtonPressed:(id)sender {
+    [self alertMessage:@"Are you ready to save your run?"];
+}
+
+
+>>>>>>> master
 - (IBAction)startAndPauseButtonPressed:(id)sender {
 
     //START

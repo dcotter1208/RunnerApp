@@ -10,12 +10,7 @@
 
 @implementation Run
 
-<<<<<<< HEAD
--(instancetype)initRun:(int)duration distance:(float)distance date:(NSString *)date temperature:(NSString *)temperature humidity:(NSString *)humidity precipitation:(NSString *)precipitation
-{
-=======
--(instancetype)initWithRunner:(NSString *)runner duration:(int)duration distance:(float)distance date:(NSString *)date {
->>>>>>> master
+-(instancetype)initWithRunner:(NSString *)runner duration:(int)duration distance:(float)distance date:(NSString *)date temperature:(NSString *)temperature humidity:(NSString *)humidity precipitation:(NSString *)precipitation{
     self = [super init];
     
     if (self) {
