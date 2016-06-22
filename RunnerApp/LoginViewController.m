@@ -28,7 +28,7 @@
     [mvcTheme themeLabels: _labels];
     [mvcTheme themeTextFields: _textFields];
     
-    _noAccountLabel.font = [UIFont systemFontOfSize:15];
+    _noAccountLabel.font = [UIFont systemFontOfSize:18];
 }
 
 - (void)didReceiveMemoryWarning {

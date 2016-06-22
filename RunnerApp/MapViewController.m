@@ -28,6 +28,7 @@
 
 @end
 
+NSMutableArray *currentPaceArray;
 CLLocation *newLocation;
 MKCoordinateRegion userLocation;
 @implementation MapViewController
@@ -73,8 +74,9 @@ MKCoordinateRegion userLocation;
     _accumulatedDistance = 0;
     _durationLabel.text = [NSString stringWithFormat:@"Time:"];
     _distanceLabel.text = [NSString stringWithFormat:@"Distance (miles):"];
+    _currentPaceLabel.text = [NSString stringWithFormat:@"Current Pace:"];
+    _overallPaceLabel.text = [NSString stringWithFormat:@"Overall Pace:"];
 }
-
 
 #pragma mark Timer Methods
 
@@ -89,11 +91,11 @@ MKCoordinateRegion userLocation;
 - (void)eachSecond {
     _seconds++;
     _accumulatedDistance += _distance;
-    //NSLog(@"Accumulated Distance: %@", [self formatRunDistance:_accumulatedDistance]);
     _durationLabel.text = [NSString stringWithFormat:@"Time: %@", [self formatRunTime:_seconds]];
     _distanceLabel.text = [NSString stringWithFormat:@"Distance (miles): %@", [self formatRunDistance:_accumulatedDistance]];
+    _currentPaceLabel.text = [NSString stringWithFormat:@"Current Pace: %@", [self getCurrentPace]];
+    _overallPaceLabel.text = [NSString stringWithFormat:@"Overall Pace: %@", [self getOverallPace]];
 }
-
 
 #pragma mark Save To Firebase
 
@@ -115,7 +117,7 @@ MKCoordinateRegion userLocation;
 
 -(void)alertMessage:(NSString*)message {
     UIAlertController* alert = [UIAlertController
-                                alertControllerWithTitle:@"Alert"
+                                alertControllerWithTitle:nil
                                 message:message
                                 preferredStyle:UIAlertControllerStyleAlert];
     
@@ -139,22 +141,42 @@ MKCoordinateRegion userLocation;
 }
 
 -(void)customUISetup {
+    
     Themer *mvcTheme = [[Themer alloc]init];
     [mvcTheme themeButtons: _buttons];
     [mvcTheme themeLabels: _labels];
     [mvcTheme themeMaps: _maps];
+    
+    _currentPaceLabel.font = [UIFont systemFontOfSize:20];
+    _overallPaceLabel.font = [UIFont systemFontOfSize:20];
+    
     _startAndPauseButton.backgroundColor = [UIColor colorWithRed:39.0f/255.0f green:196.0f/255.0f blue:36.0f/255.0f alpha:1.0];
     _stopButton.backgroundColor = [UIColor redColor];
 }
 
+-(NSString *) getCurrentPace {
+    NSString *currentPace;
+    if (_seconds < 30) {
+        currentPace = @"calculating...";
+    } else {
+        
+    }
+    return currentPace;
+}
+
+-(NSString *) getOverallPace {
+    float miles = _accumulatedDistance/1609.344;
+    NSString *overallPace = [NSString stringWithFormat:@"%f per hour", (miles/_seconds)*3600];
+    return overallPace;
+}
+
 //Puts the semi-translucent view in that the start/stop/distance/duration views sit on.
 -(void)initDesignElements {
-    CGRect screenRect = {{0, [[UIScreen mainScreen] bounds].size.height-170}, {CGRectGetWidth(self.view.bounds), 170}};
+    CGRect screenRect = {{0, [[UIScreen mainScreen] bounds].size.height-230}, {CGRectGetWidth(self.view.bounds), 230}};
     UIView* coverView = [[UIView alloc] initWithFrame:screenRect];
     coverView.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.6];
     [self.view insertSubview:coverView atIndex:1];
 }
-
 
 //Formats the run time into hours, minutes, seconds.
 -(NSString *)formatRunTime:(int)runTime {
