@@ -10,7 +10,7 @@
 
 @implementation Run
 
--(instancetype)initWithRunner:(NSString *)runner duration:(int)duration distance:(float)distance date:(NSString *)date {
+-(instancetype)initWithRunner:(NSString *)runner duration:(int)duration distance:(float)distance date:(NSString *)date temperature:(NSString *)temperature humidity:(NSString *)humidity precipitation:(NSString *)precipitation{
     self = [super init];
     
     if (self) {
@@ -18,6 +18,9 @@
         _duration = duration;
         _distance = distance;
         _date = date;
+        _temperature = temperature;
+        _humidity = humidity;
+        _precipitation = precipitation;
     }
     return self;
 }
