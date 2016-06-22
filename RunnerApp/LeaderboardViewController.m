@@ -39,11 +39,8 @@
     
     [spotRef observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot) {
         
-        Run *run = [[Run alloc]initRun:
-                    [snapshot.value[@"duration"] intValue]
-                    distance:[snapshot.value[@"distance"] floatValue]
-                    date:snapshot.value[@"date"]];
-        
+        Run *run = [[Run alloc]initWithRunner:snapshot.value[@"runner"] duration: [snapshot.value[@"duration"] intValue] distance:[snapshot.value[@"distance"] floatValue] date:snapshot.value[@"date"]];
+
         [_runArray addObject:run];
         [_runTableView reloadData];
 
