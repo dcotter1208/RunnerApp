@@ -62,7 +62,6 @@ MKCoordinateRegion userLocation;
     
     [self saveRunToFirebase:run];
     
-    //will update conditionally based on dialog in future -- alert field
     _accumulatedDistance = 0;
 }
 
