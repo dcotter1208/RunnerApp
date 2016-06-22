@@ -10,4 +10,10 @@
 
 @interface Weather : NSObject
 
+@property (nonatomic) NSString *temperature;
+@property (nonatomic) NSString *precipitation;
+@property (nonatomic) NSString *humidity;
+
+//-(id)initWithNSDictionary:(NSDictionary *)weatherInfo_;
+
 @end

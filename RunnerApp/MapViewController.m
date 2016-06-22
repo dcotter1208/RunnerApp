@@ -12,6 +12,7 @@
 #import "MapViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import "Run.h"
+#import "Weather.h"
 
 //==========================================================================================================
 //Weather add ==============================================================================================
@@ -45,409 +46,72 @@ MKCoordinateRegion userLocation;
 WKWebView *webView;
 NSHTTPURLResponse *weatherQuerryResponse;
 
+- (void) getWeatherInfo
+{
+    double lon = newLocation.coordinate.longitude;
+    double lat = newLocation.coordinate.latitude;
 
+    NSString *weatherUrlString = [NSString stringWithFormat:@"http://api.wunderground.com/api/ed2eda62a0bc8673/conditions/q/%0.8f,%0.8f.json", lat, lon];
+    NSURL *weatherUrl = [NSURL URLWithString:weatherUrlString];
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-- (void) getWeatherInfo{//:(id)sender
+    NSURLSessionConfiguration *weatherConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *weatherSession = [NSURLSession sessionWithConfiguration:weatherConfig];
+    NSURLSessionDataTask *weatherDataTask = [weatherSession dataTaskWithURL:weatherUrl completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
     {
-        //Weather API Key = ed2eda62a0bc8673, inserted into URL below
-        NSString *weatherUrlString = @"http://api.wunderground.com/api/ed2eda62a0bc8673/conditions/q/48138.json";
-        NSURL *weatherUrl = [NSURL URLWithString:weatherUrlString];
-
-        NSURLSessionConfiguration *weatherConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
-        NSURLSession *weatherSession = [NSURLSession sessionWithConfiguration:weatherConfig];
-        NSURLSessionDataTask *weatherDataTask = [weatherSession dataTaskWithURL:weatherUrl completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
+        if (!error)
         {
-            if (!error)
+            //Cast the NSURLResponse to a NSHTTPURLResponse so we can get access to the 'status code'
+            NSHTTPURLResponse *urlResponse = (NSHTTPURLResponse*) response;
+            //If that status code is 200 - meaning the response was good
+            if (urlResponse.statusCode == 200)
             {
-                //Cast the NSURLResponse to a NSHTTPURLResponse so we can get access to the 'status code'
-                NSHTTPURLResponse *urlResponse = (NSHTTPURLResponse*) response;
-                //If that status code is 200 - meaning the response was good
-                if (urlResponse.statusCode == 200)
+                //Make a NSError to hold a domain error if one ends up existing.
+                NSError *jsonError;
+                //turn the returned JSON into a NSDictionary and pass in the jsonError error that we created (&jsonError).
+                NSDictionary *weatherJSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
+                //If there is no jsonError
+                if (!jsonError)
                 {
-                    //Make a NSError to hold a domain error if one ends up existing.
-                    NSError *jsonError;
-                    //turn the returned JSON into a NSDictionary and pass in the jsonError error that we created (&jsonError).
-                    NSDictionary *weatherJSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
-                    //If there is no jsonError
-                    if (!jsonError)
-                    {
-                        //Print the NSDictionary we just made that should have the data.
-                        NSLog(@"%@", weatherJSON);
-                        
-                        //I have a vehicle class that I'm going to make with the returned JSON.
-//                        Vehicle *while = [Vehicle initWithMake:[vehicleJSON valueForKeyPath:@"make.name"]];
-//                        vehicle.model = [vehicleJSON valueForKeyPath:@"model.name"];
-//                        vehicle.baseMSRP = [[vehicleJSON valueForKeyPath:@"price.baseMSRP"]stringValue];
-//                        NSArray *yearsDict = [vehicleJSON valueForKeyPath:@"years"];
-//                        vehicle.year = [yearsDict[0][@"year"]stringValue];
-//                        vehicle.VIN = [VINNumber uppercaseString];
-//                        
-                        //disptch_async updates my labels with the vehicle info when it is returned from the API provider.
-//                        dispatch_async(dispatch_get_main_queue(), ^{
-//                            
-//                            self.makeLabel.text = [NSString stringWithFormat:@"  %@", vehicle.make];
-//                            self.modelLabel.text = [NSString stringWithFormat:@"  %@", vehicle.model];
-//                            self.yearLabel.text = [NSString stringWithFormat:@"  %@", vehicle.year];
-//                            self.baseMSRPLabel.text = [NSString stringWithFormat:@"  $%@", vehicle.baseMSRP];
-//                            
-//                        });
-                    }
-                }
+                    //Print the NSDictionary we just made that should have the data.
+                    //NSLog(@"%@", weatherJSON);
+                    
+                    //I have a weather class that I'm going to make with the returned JSON.
+                    Weather *weather = [[Weather alloc] init];
+                    
+                    weather.temperature = [weatherJSON valueForKeyPath:@"current_observation.temp_f"];
+                    weather.humidity = [weatherJSON valueForKeyPath:@"current_observation.relative_humidity"];
+                    weather.precipitation = [weatherJSON valueForKeyPath:@"current_observation.precip_1hr_in"];
+                    
+                    //Print out info for confirmation of call
+//                    NSLog(@"=========================================================================");
+//                    NSLog(@"coordinates are %@ longitude and %@ latitude", [weatherJSON valueForKeyPath:@"current_observation.display_location.longitude"], [weatherJSON valueForKeyPath:@"current_observation.display_location.latitude"]);
+//                    NSLog(@"location is %@", [weatherJSON valueForKeyPath:@"current_observation.display_location.full"]);
+//                    NSLog(@"temperature is %@", weather.temperature);
+//                    NSLog(@"humidity is %@", weather.humidity);
+//                    NSLog(@"precipitation is %@", weather.precipitation);
+
+                    
+                    // disptch_async updates my labels with the weather info when it is returned from the API / data provider.
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                    self.temperatureLable.text = [NSString stringWithFormat:@"  %@", weather.temperature];
+                    self.humidityLabel.text = [NSString stringWithFormat:@"  %@", weather.humidity];
+                    self.precipitationLabel.text = [NSString stringWithFormat:@"  %@", weather.precipitation];
+                    }//);
             }
-        }];
+        }
+    }];
+
     //This starts the network call.
     [weatherDataTask resume];
 }
-
-        
-        
-//        //create a mutable HTTP request
-//        NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:myUrl];
-//        //sets the receiver’s timeout interval, in seconds
-//        [urlRequest setTimeoutInterval:30.0f];
-//        //sets the receiver’s HTTP request method
-//   //     [urlRequest setHTTPMethod:@"POST"];
-//        //sets the request body of the receiver to the specified data.
-//  //      [urlRequest setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
-//        
-//        //allocate a new operation queue
-//        NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-//        //Loads the data for a URL request and executes a handler block on an
-//        //operation queue when the request completes or fails.
-//        [NSURLConnection
-//         sendAsynchronousRequest:urlRequest
-//         queue:queue
-//         completionHandler:^(NSURLResponse *response,
-//                             NSData *data,
-//                             NSError *error) {
-//             if ([data length] >0 && error == nil){
-//                 //process the JSON response
-//                 //use the main queue so that we can interact with the screen
-//                 dispatch_async(dispatch_get_main_queue(), ^{
-//                     [self parseResponse:data];
-//                 });
-//             }
-//             else if ([data length] == 0 && error == nil){
-//                 NSLog(@"Empty Response, not sure why?");
-//             }
-//             else if (error != nil){
-//                 NSLog(@"Not again, what is the error = %@", error);
-//             }
-//         }];
-//    NSLog(@"==========================================================================================================================");
-//
-//    NSLog(@"urlRequest is %@", urlRequest);
-//    NSLog(@"==========================================================================================================================");
-//    
-//   // NSLog(@"urlResponse is %@", NSURLResponseUnknownLength);
-//     NSLog(@"");
-//     NSLog(@"");
-//     NSLog(@"");
-//}
-//
-//- (void) parseResponse:(NSData *) data {
-//    
-//    NSString *myData = [[NSString alloc] initWithData:data
-//                                             encoding:NSUTF8StringEncoding];
-//    
-//    NSLog(@"==========================================================================================================================");
-//    NSLog(@"JSON data = %@", myData);
-//    NSError *error = nil;
-//    
-//    //parsing the JSON response
-//    id jsonObject = [NSJSONSerialization
-//                     JSONObjectWithData:data
-//                     options:NSJSONReadingAllowFragments
-//                     error:&error];
-//    if (jsonObject != nil && error == nil){
-//        NSLog(@"Successfully deserialized...");
-//        
-//        //check if the country code was valid
-//        NSNumber *success = [jsonObject objectForKey:@"success"];
-//        if([success boolValue] == YES){
-////            
-////            //if the second view controller doesn't exists create it
-////            if(self.mapViewController == nil){
-////                DisplayViewController *displayView = [[DisplayViewController alloc] init];
-////                self.displayViewController = displayView;
-////            }
-////            
-////            //set the country object of the second view controller
-////            [self.mapViewController setJsonObject:[jsonObject objectForKey:@"countryInfo"]];
-////            
-////            //tell the navigation controller to push a new view into the stack
-////            [self.navigationController pushViewController:self.displayViewController animated:YES];
-////        }
-////        else {
-////            self.myLabel.text = @"Country Code is Invalid...";
-//        }
-//        
-//    }
-//    
-//}
-//
-//
-
-
-
-
-
-
-
-
-//NSString *edmundsAPIKey = @"5xgdf7jpeu9wkgnq6f5rave4";
-//NSString *VINNumber = [self.VINTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
-//
-////URL STRING
-//NSString *urlString = [NSString stringWithFormat:@"https://api.edmunds.com/api/vehicle/v2/vins/%@?fmt=json&api_key=%@", VINNumber, edmundsAPIKey];
-//
-////Create URL
-//NSURL *url = [NSURL URLWithString:urlString];
-//
-////Set the config
-//NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-////Create the session
-//NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
-////Perform the Session with dataTask
-//NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-    
-    //If there is no error...
-//    if (!error) {
-//        //Cast the NSURLResponse to a NSHTTPURLResponse so we can get access to the 'status code'
-//        NSHTTPURLResponse *urlResponse = (NSHTTPURLResponse*) response;
-//        
-//        //If that status code is 200 - meaning the response was good
-//        if (urlResponse.statusCode == 200) {
-//            
-//            //Make a NSError to hold a domain error if one ends up existing.
-//            NSError *jsonError;
-//            
-//            //turn the returned JSON into a NSDictionary and pass in the jsonError error that we created (&jsonError).
-//            NSDictionary *vehicleJSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
-//            
-//            //If there is no jsonError
-//            if (!jsonError) {
-//                //Print the NSDictionary we just made that should have the data.
-//                NSLog(@"%@", vehicleJSON);
-//                
-//                //I have a vehicle class that I'm going to make with the returned JSON.
-//                Vehicle *vehicle = [Vehicle initWithMake:[vehicleJSON valueForKeyPath:@"make.name"]];
-//                vehicle.model = [vehicleJSON valueForKeyPath:@"model.name"];
-//                vehicle.baseMSRP = [[vehicleJSON valueForKeyPath:@"price.baseMSRP"]stringValue];
-//                NSArray *yearsDict = [vehicleJSON valueForKeyPath:@"years"];
-//                vehicle.year = [yearsDict[0][@"year"]stringValue];
-//                vehicle.VIN = [VINNumber uppercaseString];
-//                
-//                //disptch_async updates my labels with the vehicle info when it is returned from the API provider.
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    
-//                    self.makeLabel.text = [NSString stringWithFormat:@"  %@", vehicle.make];
-//                    self.modelLabel.text = [NSString stringWithFormat:@"  %@", vehicle.model];
-//                    self.yearLabel.text = [NSString stringWithFormat:@"  %@", vehicle.year];
-//                    self.baseMSRPLabel.text = [NSString stringWithFormat:@"  $%@", vehicle.baseMSRP];
-//                    
-//                });
-//            }
-//        }
-//    }
-//}];
-////This starts the network call.
-//[dataTask resume];
-//}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//- (void)viewDidAppear:(BOOL)animated {
-//    NSURL *u = [NSURL URLWithString:@"http://www.google.de"];
-//    NSURLRequest *r = [NSURLRequest requestWithURL:u];
-//    [self.webView loadRequest:r];
-//}
-//
-//- (void)webViewDidFinishLoad:(UIWebView *)webView {
-//    NSCachedURLResponse *resp = [[NSURLCache sharedURLCache] cachedResponseForRequest:webView.request];
-//    NSLog(@"%@",[(NSHTTPURLResponse*)resp.response allHeaderFields]);
-//}
-
-//- (NSURLSessionDataTask *)dataTaskWithURL:(NSURL *)url
-//                        completionHandler:(void (^)(NSData *data,
-//                                                    NSURLResponse *response,
-//                                                    NSError *error))completionHandler
-//
-//};
-
 
 - (void)viewDidLoad {
     [self.navigationController setNavigationBarHidden:true];
     [super viewDidLoad];
     _accumulatedDistance = 0;
-    //NSLog(@"weather querry returns: %@", weatherQuerryResponse);
-    
-    
-//    NSURL *u = [NSURL URLWithString:@"http://api.wunderground.com/api/ed2eda62a0bc8673/conditions/q/48138.json"];
-//    NSURLRequest *r = [NSURLRequest requestWithURL:u];
-//    [webView loadRequest:r];
-//    NSCachedURLResponse *resp = [[NSURLCache sharedURLCache] cachedResponseForRequest:webView.r ];
-//    NSLog(@"==========================================================================================================================");
-//    NSLog(@"URL is: %@", u);
-//    NSLog(@"URL Request is: %@",r);
-//    NSLog(@"URL Response is: %@",resp);
-    
-    // NSString *body =  [NSString stringWithFormat:@"countryCode=%@", countryCode.text];
-//    
-//    NSURL *myUrl = [NSURL URLWithString:@"http://api.wunderground.com/api/ed2eda62a0bc8673/conditions/q/48138.json"];
-//    //NSURLSessionConfiguration *urlSessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
-//    //[urlSessionConfig setURL
-//    //NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:urlSessionConfig];
-//    
-//    NSURLSession *urlSession;
-//    urlSession = [NSURLSession sharedSession];
-//    [urlSession dataTaskWithURL:myUrl completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
-//    {
-//    }];
-//    [urlSession]
-//     //create a mutable HTTP request
-  //  NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:myUrl];
-    //sets the receiver’s timeout interval, in seconds
-    //[urlRequest setTimeoutInterval:30.0f];
-    //sets the receiver’s HTTP request method
-    //[urlRequest setHTTPMethod:@"POST"];
-    //sets the request body of the receiver to the specified data.
-    //[urlRequest setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    //allocate a new operation queue
-  //  NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    //Loads the data for a URL request and executes a handler block on an
-//    //operation queue when the request completes or fails.
-//    [NSURLSession sharedS//ession];
-//    [NSURLConnection
-//     sendAsynchronousRequest:urlRequest
-//     queue:queue
-//     completionHandler:^(NSURLResponse *response,
-//                         NSData *data,
-//                         NSError *error) {
-//         if ([data length] >0 && error == nil){
-//             //process the JSON response
-//             //use the main queue so that we can interact with the screen
-//             dispatch_async(dispatch_get_main_queue(), ^{
-//       //          [self parseResponse:data];
-//             });
-//         }
-//         else if ([data length] == 0 && error == nil){
-//             NSLog(@"Empty Response, not sure why?");
-//         }
-//         else if (error != nil){
-//             NSLog(@"Not again, what is the error = %@", error);
-//         }
-//     }];
-
-//        NSLog(@"==========================================================================================================================");
-//        NSLog(@"URL is: %@", myUrl);
-//        NSLog(@"urlSession is: %@", urlSession);
-//        //NSLog(@"URL Request is: %@", urlRequest);
-//        NSLog(@"URL Response is: %@", urlSession.);
-
-
-//    NSLog(@"URL Response is: %@",[(NSHTTPURLResponse*)resp.response allHeaderFields]);
-//    NSLog(@"URL Response is: %@",[(NSHTTPURLResponse*)resp.response allHeaderFields]);
-
-    [self getWeatherInfo];
-    
+   
     [self mapSetup];
+    [self getWeatherInfo];
 }
 
 - (void)didReceiveMemoryWarning {
