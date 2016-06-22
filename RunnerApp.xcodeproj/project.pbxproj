@@ -21,6 +21,7 @@
 		43D7D1BF1D0F35460087EE80 /* LeaderboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D7D1BE1D0F35460087EE80 /* LeaderboardViewController.m */; };
 		43D7D1C21D0F361C0087EE80 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D7D1C11D0F361C0087EE80 /* MapKit.framework */; };
 		73051B8A06E7FA0F0F81A8D2 /* libPods-RunnerApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA6307FEB396F789D51E44D /* libPods-RunnerApp.a */; };
+		87944F441D19A8B600A8016B /* Weather.m in Sources */ = {isa = PBXBuildFile; fileRef = 87944F431D19A8B600A8016B /* Weather.m */; };
 		87F1E21A1D0F3B1700031D98 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87F1E2191D0F3B1700031D98 /* CoreLocation.framework */; };
 		87FB51131D1040D400FC19A7 /* Run.m in Sources */ = {isa = PBXBuildFile; fileRef = 87FB51121D1040D400FC19A7 /* Run.m */; };
 		D4837A8C1D18429A00715CB9 /* Themer.m in Sources */ = {isa = PBXBuildFile; fileRef = D4837A8B1D18429A00715CB9 /* Themer.m */; };
@@ -49,6 +50,8 @@
 		43D7D1BD1D0F35460087EE80 /* LeaderboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeaderboardViewController.h; sourceTree = "<group>"; };
 		43D7D1BE1D0F35460087EE80 /* LeaderboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeaderboardViewController.m; sourceTree = "<group>"; };
 		43D7D1C11D0F361C0087EE80 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		87944F421D19A8B600A8016B /* Weather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Weather.h; sourceTree = "<group>"; };
+		87944F431D19A8B600A8016B /* Weather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Weather.m; sourceTree = "<group>"; };
 		87F1E2191D0F3B1700031D98 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		87FB51111D1040D400FC19A7 /* Run.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Run.h; sourceTree = "<group>"; };
 		87FB51121D1040D400FC19A7 /* Run.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Run.m; sourceTree = "<group>"; };
@@ -87,6 +90,8 @@
 				432610D21D1433AE008A8E2F /* RunTableViewCell.m */,
 				87FB51111D1040D400FC19A7 /* Run.h */,
 				87FB51121D1040D400FC19A7 /* Run.m */,
+				87944F421D19A8B600A8016B /* Weather.h */,
+				87944F431D19A8B600A8016B /* Weather.m */,
 				D4837A8A1D18429A00715CB9 /* Themer.h */,
 				D4837A8B1D18429A00715CB9 /* Themer.m */,
 			);
@@ -291,6 +296,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87944F441D19A8B600A8016B /* Weather.m in Sources */,
 				43D7D1BC1D0F35360087EE80 /* MapViewController.m in Sources */,
 				43D7D1A61D0F0C230087EE80 /* AppDelegate.m in Sources */,
 				87FB51131D1040D400FC19A7 /* Run.m in Sources */,
