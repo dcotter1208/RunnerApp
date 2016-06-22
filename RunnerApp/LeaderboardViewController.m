@@ -9,6 +9,7 @@
 #import "LeaderboardViewController.h"
 #import "Run.h"
 #import "RunTableViewCell.h"
+@import FirebaseAuth;
 @import FirebaseDatabase;
 @import Firebase;
 
@@ -34,17 +35,16 @@
 }
 
 -(void)queryRunsFromFirebase {
-    FIRDatabaseReference *fbDataService = [[FIRDatabase database] reference];
-    FIRDatabaseReference *spotRef = [fbDataService.ref child:@"runs"];
-    
-    [spotRef observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot) {
         
+    FIRDatabaseReference *fbDataService = [[FIRDatabase database] reference];
+    FIRDatabaseReference *runsRef = [fbDataService.ref child:@"runs"];
+    FIRDatabaseQuery *currentUserRunHistory = [[runsRef queryOrderedByChild:@"runner"] queryEqualToValue:[FIRAuth auth].currentUser.uid];
+    
+    [currentUserRunHistory observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot) {
         Run *run = [[Run alloc]initWithRunner:snapshot.value[@"runner"] duration: [snapshot.value[@"duration"] intValue] distance:[snapshot.value[@"distance"] floatValue] date:snapshot.value[@"date"]];
-
-        [_runArray addObject:run];
-        [_runTableView reloadData];
-
-        }];
+            [_runArray addObject:run];
+            [_runTableView reloadData];
+    }];
 }
 
 -(NSString *)formatRunTime:(int)runTime {
