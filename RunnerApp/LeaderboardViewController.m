@@ -35,9 +35,7 @@
 }
 
 -(void)queryRunsFromFirebase {
-    
-    NSLog(@"CURRENT USER ID: %@", [FIRAuth auth].currentUser.uid);
-    
+        
     FIRDatabaseReference *fbDataService = [[FIRDatabase database] reference];
     FIRDatabaseReference *runsRef = [fbDataService.ref child:@"runs"];
     FIRDatabaseQuery *currentUserRunHistory = [[runsRef queryOrderedByChild:@"runner"] queryEqualToValue:[FIRAuth auth].currentUser.uid];
