@@ -205,6 +205,9 @@ MKCoordinateRegion userLocation;
         [_locationManager setDistanceFilter:10];
         [_locationManager startUpdatingLocation];
         newLocation = _locationManager.location;
+        userLocation = MKCoordinateRegionMakeWithDistance(_locationManager.location.coordinate, 500.0, 500.0);
+        [_mapView setRegion:userLocation animated:YES];
+
     }
 }
 
