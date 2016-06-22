@@ -63,7 +63,6 @@ MKCoordinateRegion userLocation;
     
     [self saveRunToFirebase:run];
     
-    //will update conditionally based on dialog in future -- alert field
     _accumulatedDistance = 0;
 }
 
@@ -227,6 +226,9 @@ MKCoordinateRegion userLocation;
         [_locationManager setDistanceFilter:10];
         [_locationManager startUpdatingLocation];
         newLocation = _locationManager.location;
+        MKCoordinateRegion initialLocation = MKCoordinateRegionMakeWithDistance(newLocation.coordinate, 500.0, 500.0);
+        [_mapView setRegion:initialLocation animated:YES];
+
     }
 }
 
