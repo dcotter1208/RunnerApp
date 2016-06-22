@@ -37,12 +37,16 @@
     FIRDatabaseReference *fbDataService = [[FIRDatabase database] reference];
     FIRDatabaseReference *spotRef = [fbDataService.ref child:@"runs"];
     
-    [spotRef observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot) {
-        
-        Run *run = [[Run alloc]initRun:
-                    [snapshot.value[@"duration"] intValue]
+    [spotRef observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
+    {
+        Run *run = [
+                    [Run alloc]initRun: [snapshot.value[@"duration"] intValue]
                     distance:[snapshot.value[@"distance"] floatValue]
-                    date:snapshot.value[@"date"]];
+                    date:snapshot.value[@"date"]
+                    temperature:snapshot.value[@"temperature"]
+                    humidity:snapshot.value[@"humidity"]
+                    precipitation:snapshot.value[@"precipitation"]
+                    ];
         
         [_runArray addObject:run];
         [_runTableView reloadData];

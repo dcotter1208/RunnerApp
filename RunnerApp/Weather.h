@@ -14,6 +14,6 @@
 @property (nonatomic) NSString *precipitation;
 @property (nonatomic) NSString *humidity;
 
-//-(id)initWithNSDictionary:(NSDictionary *)weatherInfo_;
+-(id)initWithWeatherTemp:(NSString *)temperature precipitation:(NSString *)precipitation humidity:(NSString *)humidity;
 
 @end

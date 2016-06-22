@@ -30,6 +30,7 @@
 @property (nonatomic) float distance;
 @property (nonatomic) float accumulatedDistance;
 @property (nonatomic) int seconds;
+@property (nonatomic, strong) Weather *weather;
 
 @end
 
@@ -37,13 +38,13 @@ CLLocation *newLocation;
 MKCoordinateRegion userLocation;
 @implementation MapViewController
 
-
 //==========================================================================================================
 //Weather add ==============================================================================================
 //==========================================================================================================
 //CFHTTPMessageRef http
 //UIWebView *webView;
 WKWebView *webView;
+
 NSHTTPURLResponse *weatherQuerryResponse;
 
 - (void) getWeatherInfo
@@ -76,11 +77,11 @@ NSHTTPURLResponse *weatherQuerryResponse;
                     //NSLog(@"%@", weatherJSON);
                     
                     //I have a weather class that I'm going to make with the returned JSON.
-                    Weather *weather = [[Weather alloc] init];
+                    _weather = [[Weather alloc] init];
                     
-                    weather.temperature = [weatherJSON valueForKeyPath:@"current_observation.temp_f"];
-                    weather.humidity = [weatherJSON valueForKeyPath:@"current_observation.relative_humidity"];
-                    weather.precipitation = [weatherJSON valueForKeyPath:@"current_observation.precip_1hr_in"];
+                    _weather.temperature = [weatherJSON valueForKeyPath:@"current_observation.temp_f"];
+                    _weather.humidity = [weatherJSON valueForKeyPath:@"current_observation.relative_humidity"];
+                    _weather.precipitation = [weatherJSON valueForKeyPath:@"current_observation.precip_1hr_in"];
                     
                     //Print out info for confirmation of call
 //                    NSLog(@"=========================================================================");
@@ -93,10 +94,11 @@ NSHTTPURLResponse *weatherQuerryResponse;
                     
                     // disptch_async updates my labels with the weather info when it is returned from the API / data provider.
                     dispatch_async(dispatch_get_main_queue(), ^{
-                    self.temperatureLable.text = [NSString stringWithFormat:@"  %@", weather.temperature];
-                    self.humidityLabel.text = [NSString stringWithFormat:@"  %@", weather.humidity];
-                    self.precipitationLabel.text = [NSString stringWithFormat:@"  %@", weather.precipitation];
-                    }//);
+                    self.temperatureLabel.text = [NSString stringWithFormat:@"  %@", _weather.temperature];
+                    self.humidityLabel.text = [NSString stringWithFormat:@"  %@", _weather.humidity];
+                    self.precipitationLabel.text = [NSString stringWithFormat:@"  %@", _weather.precipitation];
+                    });
+                }
             }
         }
     }];
@@ -109,7 +111,7 @@ NSHTTPURLResponse *weatherQuerryResponse;
     [self.navigationController setNavigationBarHidden:true];
     [super viewDidLoad];
     _accumulatedDistance = 0;
-   
+    
     [self mapSetup];
     [self getWeatherInfo];
 }
@@ -161,7 +163,7 @@ NSHTTPURLResponse *weatherQuerryResponse;
     NSDate* now = [NSDate date];
     NSString *timeStamp = [self formattedDate:now];
     
-    Run *run = [[Run alloc]initRun:_seconds distance:_accumulatedDistance date:timeStamp];
+    Run *run = [[Run alloc]initRun:_seconds distance:_accumulatedDistance date:timeStamp temperature:_weather.temperature humidity:_weather.humidity precipitation:_weather.precipitation];
     
     [self saveRunToFirebase:run];
     
@@ -208,9 +210,14 @@ NSHTTPURLResponse *weatherQuerryResponse;
     
     FIRDatabaseReference *runsRef = [fbDataService child:@"runs"].childByAutoId;
     
-    NSDictionary *runToAdd = @{@"duration": [NSNumber numberWithInt:run.duration],
+    NSDictionary *runToAdd = @{
+                               @"duration": [NSNumber numberWithInt:run.duration],
                                @"distance": [NSNumber numberWithFloat:miles],
-                               @"date": run.date};
+                               @"date": run.date,
+                               @"temperature": run.temperature,
+                               @"humidity": run.humidity,
+                               @"precipitation": run.precipitation,
+                               };
 
     [runsRef setValue:runToAdd];
 }
@@ -255,8 +262,4 @@ NSHTTPURLResponse *weatherQuerryResponse;
         }
     }
 }
-
-
-
-
 @end
