@@ -13,10 +13,9 @@
 
 -(void)themeButtons:(NSArray *)buttons {
     //NSLog(@"button count = %lu", (unsigned long)buttons.count);
-    
     for (UIButton *btn in buttons) {
         //btn.titleLabel.font = [UIFont fontWithName:@"System" size:18.0];
-        btn.titleLabel.font = [UIFont boldSystemFontOfSize:20];
+        btn.titleLabel.font = [UIFont boldSystemFontOfSize:22];
         [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         btn.layer.cornerRadius = 5;
         //btn.layer.masksToBounds = YES;
@@ -29,7 +28,6 @@
         [btn.layer setShadowColor:[[UIColor blackColor] CGColor]];
         [btn.layer setShadowOpacity:0.5];
     }
-    
 }
 
 -(void)themeLabels:(NSArray *)labels {
@@ -40,7 +38,6 @@
 }
 
 -(void)themeTextFields:(NSArray *)textFields {
-    
     for (UITextField *tf in textFields) {
         tf.font = [UIFont systemFontOfSize:20];
         tf.layer.cornerRadius = 5;

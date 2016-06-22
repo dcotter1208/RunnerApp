@@ -115,6 +115,7 @@ NSHTTPURLResponse *weatherQuerryResponse;
     [self.navigationController setNavigationBarHidden:true];
     [super viewDidLoad];
     _accumulatedDistance = 0;
+    currentPaceArray = [[NSMutableArray alloc] init];
     
     [self mapSetup];
     [self getWeatherInfo];
@@ -184,6 +185,7 @@ NSHTTPURLResponse *weatherQuerryResponse;
     FIRDatabaseReference *runsRef = [fbDataService child:@"runs"].childByAutoId;
     
     NSDictionary *runToAdd = @{
+                               @"runner" : [FIRAuth auth].currentUser.uid,
                                @"duration": [NSNumber numberWithInt:run.duration],
                                @"distance": [NSNumber numberWithFloat:miles],
                                @"date": run.date,
@@ -238,17 +240,23 @@ NSHTTPURLResponse *weatherQuerryResponse;
 
 -(NSString *) getCurrentPace {
     NSString *currentPace;
-    if (_seconds < 30) {
+    if (_seconds <= 21) {
         currentPace = @"calculating...";
+        [currentPaceArray addObject:[NSNumber numberWithInt:_distance]];
+        NSLog(@"_distance = %@", [NSNumber numberWithInt:_distance]);
     } else {
-        
+        [currentPaceArray removeObjectAtIndex:0];
+        [currentPaceArray addObject:[NSNumber numberWithInt:_distance]];
+        float miles = (([currentPaceArray[1] intValue] + [currentPaceArray[20] intValue])/3218.688)*3600;
+        currentPace = [NSString stringWithFormat:@"%.02f mph", miles];
+        NSLog(@"Current Pace = %@", currentPaceArray[1]);
     }
     return currentPace;
 }
 
 -(NSString *) getOverallPace {
     float miles = _accumulatedDistance/1609.344;
-    NSString *overallPace = [NSString stringWithFormat:@"%f per hour", (miles/_seconds)*3600];
+    NSString *overallPace = [NSString stringWithFormat:@"%.02f mph", (miles/_seconds)*3600];
     return overallPace;
 }
 
