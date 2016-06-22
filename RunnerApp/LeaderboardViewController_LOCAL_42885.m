@@ -13,6 +13,7 @@
 @import FirebaseDatabase;
 @import Firebase;
 
+
 @interface LeaderboardViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *runTableView;

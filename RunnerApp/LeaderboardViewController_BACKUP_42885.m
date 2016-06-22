@@ -40,9 +40,17 @@
     FIRDatabaseQuery *currentUserRunHistory = [[runsRef queryOrderedByChild:@"runner"] queryEqualToValue:[FIRAuth auth].currentUser.uid];
     
     [currentUserRunHistory observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot) {
+<<<<<<< HEAD
         Run *run = [[Run alloc]initWithRunner:snapshot.value[@"runner"] duration:[snapshot.value[@"duration"]intValue] distance:[snapshot.value[@"distance"]floatValue] date:snapshot.value[@"date"] temperature:snapshot.value[@"temperature"] humidity:snapshot.value[@"humidity"] precipitation:snapshot.value[@"precipitation"]];
         [_runArray addObject:run];
         [_runTableView reloadData];
+=======
+        
+        Run *run = [[Run alloc]initWithRunner:snapshot.value[@"runner"] duration:[snapshot.value[@"duration"]intValue] distance:[snapshot.value[@"distance"]floatValue] date:snapshot.value[@"date"] temperature:snapshot.value[@"temperature"] humidity:snapshot.value[@"humidity"] precipitation:snapshot.value[@"precipitation"]];
+        NSLog(@"RUN: %@", run);
+            [_runArray addObject:run];
+            [_runTableView reloadData];
+>>>>>>> 987cb525ba4c90d29f918c4cd6456304a63e58a1
     }];
 }
 
