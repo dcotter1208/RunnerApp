@@ -182,7 +182,7 @@ NSHTTPURLResponse *weatherQuerryResponse;
     FIRDatabaseReference *fbDataService = [[FIRDatabase database] reference];
     
     FIRDatabaseReference *runsRef = [fbDataService child:@"runs"].childByAutoId;
-    
+
     NSDictionary *runToAdd = @{
                                @"runner" : run.runner,
                                @"duration": [NSNumber numberWithInt:run.duration],
@@ -273,7 +273,6 @@ NSHTTPURLResponse *weatherQuerryResponse;
     int minutes2 = (runTime / 60) % 60;
     int hours2 = (runTime / 3600);
     NSString *formattedTime = [NSString stringWithFormat:@"%02i:%02i:%02i", hours2, minutes2, seconds2];
-    //NSLog(@"time formatter");
     return formattedTime;
 }
 
