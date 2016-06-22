@@ -115,7 +115,6 @@ NSHTTPURLResponse *weatherQuerryResponse;
     [self.navigationController setNavigationBarHidden:true];
     [super viewDidLoad];
     _accumulatedDistance = 0;
-    currentPaceArray = [[NSMutableArray alloc] init];
     
     [self mapSetup];
     [self getWeatherInfo];
@@ -185,7 +184,7 @@ NSHTTPURLResponse *weatherQuerryResponse;
     FIRDatabaseReference *runsRef = [fbDataService child:@"runs"].childByAutoId;
     
     NSDictionary *runToAdd = @{
-                               @"runner" : [FIRAuth auth].currentUser.uid,
+                               @"runner" : run.runner,
                                @"duration": [NSNumber numberWithInt:run.duration],
                                @"distance": [NSNumber numberWithFloat:miles],
                                @"date": run.date,
