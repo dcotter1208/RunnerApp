@@ -10,4 +10,8 @@
 
 @interface SignUpViewController : UIViewController
 
+
+//IBOutletCollections
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
+@property (strong, nonatomic) IBOutletCollection(UITextField) NSArray *textFields;
 @end

@@ -28,12 +28,11 @@
                                                     FIRUser *user) {
         
         if (user != nil) {
-            
             // Show the Initial MapSpotMapVC
             self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"InitialTabController"];
         } else {
             // Login
-            self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginVC"];
+            self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginVCNavController"];
         }
         [self.window makeKeyAndVisible];
     }];

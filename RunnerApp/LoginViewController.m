@@ -9,10 +9,12 @@
 @import FirebaseAuth;
 #import "LoginViewController.h"
 #import "MapViewController.h"
+#import "Themer.h"
 
 @interface LoginViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *emailTF;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTF;
+@property (strong, nonatomic) IBOutlet UILabel *noAccountLabel;
 
 @end
 
@@ -20,7 +22,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
+    Themer *mvcTheme = [[Themer alloc]init];
+    [mvcTheme themeButtons: _buttons];
+    [mvcTheme themeLabels: _labels];
+    [mvcTheme themeTextFields: _textFields];
+    
+    _noAccountLabel.font = [UIFont systemFontOfSize:18];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -28,10 +36,10 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)loginFailedAlertView {
+-(void)loginFailedAlertView:(NSString *)title message:(NSString *)message {
     UIAlertController *alertController =[UIAlertController
-                                         alertControllerWithTitle:@"Whoops!"
-                                         message:@"Please check your email or password. No account? Sign up!"
+                                         alertControllerWithTitle:title
+                                         message:message
                                          preferredStyle:UIAlertControllerStyleAlert];
 
 
@@ -44,14 +52,17 @@
 -(void)validateUserLoginInfo {
     [[FIRAuth auth] signInWithEmail:_emailTF.text password:_passwordTF.text completion:^(FIRUser *user, NSError *error) {
              if (error) {
-                 [self loginFailedAlertView];
-                 NSLog(@"Error: %@", error.description);
-             } else {
-                 [self performSegueWithIdentifier:@"enterAppSegue" sender:self];
+                 
+                 if (error.code == 17999) {
+                     [self loginFailedAlertView:@"Login Failed" message:[NSString stringWithFormat:@"%@ doesn't appear to be an existing email", _emailTF.text]];
+                 } else if (error.code == 17009) {
+                     [self loginFailedAlertView:@"Login Failed" message:@"Your password doesn't appear to be correct. Please try again."];
+                 } else {
+                     [self loginFailedAlertView:@"Login Failed" message:@"Please try again."];
+                 }
              }
         }];
 }
-
 
 - (IBAction)loginButtonPressed:(id)sender {
 

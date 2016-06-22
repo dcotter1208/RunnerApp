@@ -31,11 +31,18 @@
 
 @property (nonatomic) int duration;
 @property (nonatomic) float distance;
+<<<<<<< HEAD
 @property (nonatomic) NSString *date;
 @property (nonatomic) NSString *temperature;
 @property (nonatomic) NSString *humidity;
 @property (nonatomic) NSString *precipitation;
 
--(instancetype)initRun:(int)duration distance:(float)distance date:(NSString *)date temperature:(NSString *)temperature humidity:(NSString *)humidity precipitation:(NSString *)precipitation;
+-(instancetype)initRunner:(int)duration distance:(float)distance date:(NSString *)date temperature:(NSString *)temperature humidity:(NSString *)humidity precipitation:(NSString *)precipitation;
+=======
+@property (nonatomic, strong) NSString *date;
+@property (nonatomic, strong) NSString *runner;
+
+-(instancetype)initWithRunner:(NSString *)runner duration:(int)duration distance:(float)distance date:(NSString *)date;
+>>>>>>> master
 
 @end
