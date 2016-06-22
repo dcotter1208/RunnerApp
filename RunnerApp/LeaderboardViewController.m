@@ -13,7 +13,6 @@
 @import FirebaseDatabase;
 @import Firebase;
 
-
 @interface LeaderboardViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *runTableView;
@@ -43,7 +42,7 @@
     [currentUserRunHistory observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot) {
         
         Run *run = [[Run alloc]initWithRunner:snapshot.value[@"runner"] duration:[snapshot.value[@"duration"]intValue] distance:[snapshot.value[@"distance"]floatValue] date:snapshot.value[@"date"] temperature:snapshot.value[@"temperature"] humidity:snapshot.value[@"humidity"] precipitation:snapshot.value[@"precipitation"]];
-
+        NSLog(@"RUN: %@", run);
             [_runArray addObject:run];
             [_runTableView reloadData];
     }];

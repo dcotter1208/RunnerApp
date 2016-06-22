@@ -184,6 +184,7 @@ NSHTTPURLResponse *weatherQuerryResponse;
     FIRDatabaseReference *runsRef = [fbDataService child:@"runs"].childByAutoId;
     
     NSDictionary *runToAdd = @{
+                               @"runner" : run.runner,
                                @"duration": [NSNumber numberWithInt:run.duration],
                                @"distance": [NSNumber numberWithFloat:miles],
                                @"date": run.date,
