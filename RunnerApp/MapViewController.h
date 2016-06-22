@@ -15,6 +15,8 @@
 @property (nonatomic, strong) NSTimer *timer;
 @property (weak, nonatomic) IBOutlet UILabel *durationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
+@property (weak, nonatomic) IBOutlet UILabel *currentPaceLabel;
+@property (weak, nonatomic) IBOutlet UILabel *overallPaceLabel;
 
 //IBOutletCollections
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
