@@ -75,17 +75,11 @@ NSHTTPURLResponse *weatherQuerryResponse;
                 //turn the returned JSON into a NSDictionary and pass in the jsonError error that we created (&jsonError).
                 NSDictionary *weatherJSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
                 //If there is no jsonError
-                if (!jsonError)
-                {
+                if (!jsonError) {
                     //Print the NSDictionary we just made that should have the data.
                     //NSLog(@"%@", weatherJSON);
                     
                     //I have a weather class that I'm going to make with the returned JSON.
-                    _weather = [[Weather alloc] init];
-                    
-                    _weather.temperature = [weatherJSON valueForKeyPath:@"current_observation.temp_f"];
-                    _weather.humidity = [weatherJSON valueForKeyPath:@"current_observation.relative_humidity"];
-                    _weather.precipitation = [weatherJSON valueForKeyPath:@"current_observation.precip_1hr_in"];
                     
                     //Print out info for confirmation of call
 //                    NSLog(@"=========================================================================");
@@ -98,9 +92,10 @@ NSHTTPURLResponse *weatherQuerryResponse;
                     
                     // disptch_async updates my labels with the weather info when it is returned from the API / data provider.
                     dispatch_async(dispatch_get_main_queue(), ^{
-//                    self.temperatureLabel.text = [NSString stringWithFormat:@"  %@", _weather.temperature];
-//                    self.humidityLabel.text = [NSString stringWithFormat:@"  %@", _weather.humidity];
-//                    self.precipitationLabel.text = [NSString stringWithFormat:@"  %@", _weather.precipitation];
+                        _weather = [[Weather alloc]initWithWeatherTemp:[weatherJSON valueForKeyPath:@"current_observation.temp_f"] precipitation:[weatherJSON valueForKeyPath:@"current_observation.relative_humidity"] humidity:[weatherJSON valueForKeyPath:@"current_observation.precip_1hr_in"]];
+//                        _weather.temperature = [weatherJSON valueForKeyPath:@"current_observation.temp_f"];
+//                        _weather.humidity = [weatherJSON valueForKeyPath:@"current_observation.relative_humidity"];
+//                        _weather.precipitation = [weatherJSON valueForKeyPath:@"current_observation.precip_1hr_in"];
                     });
                 }
             }
@@ -112,12 +107,12 @@ NSHTTPURLResponse *weatherQuerryResponse;
 }
 
 - (void)viewDidLoad {
+    [self getWeatherInfo];
     [self.navigationController setNavigationBarHidden:true];
     [super viewDidLoad];
     _accumulatedDistance = 0;
     
     [self mapSetup];
-    [self getWeatherInfo];
     [self initDesignElements];
     [self customUISetup];
 }
@@ -183,17 +178,39 @@ NSHTTPURLResponse *weatherQuerryResponse;
     
     FIRDatabaseReference *runsRef = [fbDataService child:@"runs"].childByAutoId;
 
-    NSDictionary *runToAdd = @{
-                               @"runner" : run.runner,
-                               @"duration": [NSNumber numberWithInt:run.duration],
-                               @"distance": [NSNumber numberWithFloat:miles],
-                               @"date": run.date,
-                               @"temperature": run.temperature,
-                               @"humidity": run.humidity,
-                               @"precipitation": run.precipitation,
-                               };
+    NSLog(@"*************************************************************************");
+    NSLog(@"Run.Runner: %@", run.runner);
+    NSLog(@"Current User ID: %@", [FIRAuth auth].currentUser.uid);
+    NSLog(@"Duration: %@", [NSNumber numberWithInt:run.duration]);
+    NSLog(@"Distance: %@", [NSNumber numberWithFloat:miles]);
+    NSLog(@"Date: %@", run.date);
+    NSLog(@"Temp: %@", run.temperature);
+    NSLog(@"Humidity: %@", run.humidity);
+    NSLog(@"Precipitation: %@", run.precipitation);
     
-    [runsRef setValue:runToAdd];
+    if (_weather != nil) {
+        NSDictionary *runToAdd = @{
+                                   @"runner" : run.runner,
+                                   @"duration": [NSNumber numberWithInt:run.duration],
+                                   @"distance": [NSNumber numberWithFloat:miles],
+                                   @"date": run.date,
+                                   @"temperature": run.temperature,
+                                   @"humidity": run.humidity,
+                                   @"precipitation": run.precipitation,
+                                   };
+        [runsRef setValue:runToAdd];
+    } else {
+        NSDictionary *runToAdd = @{
+                                   @"runner" : run.runner,
+                                   @"duration": [NSNumber numberWithInt:run.duration],
+                                   @"distance": [NSNumber numberWithFloat:miles],
+                                   @"date": run.date,
+                                   @"temperature": @"Unavailable",
+                                   @"humidity": @"Unavailable",
+                                   @"precipitation": @"Unavailable",
+                                   };
+        [runsRef setValue:runToAdd];
+    }
 }
 
 #pragma mark Helper Methods
