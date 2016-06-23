@@ -73,12 +73,32 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bs6-4u-EuF">
+                                <rect key="frame" x="16" y="24" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tJW-SY-Duz">
+                                <rect key="frame" x="139" y="24" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hyy-sV-65R">
+                                <rect key="frame" x="258" y="24" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="VCW-OC-DN2" firstAttribute="width" secondItem="T2D-he-6Vl" secondAttribute="width" id="0qw-R6-nrA"/>
                             <constraint firstItem="kLR-K9-Xwb" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="18g-SF-R7Z"/>
+                            <constraint firstItem="bs6-4u-EuF" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="2fo-6f-2vn"/>
                             <constraint firstItem="TJl-K1-4Rl" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="2tA-bm-k6Z"/>
+                            <constraint firstItem="tJW-SY-Duz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ITW-gv-hYE"/>
                             <constraint firstItem="VCW-OC-DN2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="KkS-CT-ypQ"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="VCW-OC-DN2" secondAttribute="bottom" constant="5" id="Oel-YQ-JgK"/>
                             <constraint firstItem="T2D-he-6Vl" firstAttribute="leading" secondItem="VCW-OC-DN2" secondAttribute="trailing" constant="10" id="PpS-cq-UAV"/>
@@ -89,6 +109,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="ury-L0-ueL" secondAttribute="trailing" constant="-20" id="XPL-VP-5UQ"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="T2D-he-6Vl" secondAttribute="bottom" constant="5" id="Yk6-ww-nGH"/>
                             <constraint firstItem="TJl-K1-4Rl" firstAttribute="top" secondItem="Aag-l2-Ref" secondAttribute="bottom" constant="5" id="cwJ-2F-nTc"/>
+                            <constraint firstItem="hyy-sV-65R" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="eYo-dM-brK"/>
                             <constraint firstItem="T2D-he-6Vl" firstAttribute="top" secondItem="TJl-K1-4Rl" secondAttribute="bottom" constant="10" id="ine-eh-tPv"/>
                             <constraint firstItem="J34-yx-yux" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="jHI-ht-PLh"/>
                             <constraint firstItem="Aag-l2-Ref" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="kUQ-0f-cb2"/>
@@ -96,15 +117,18 @@
                             <constraint firstAttribute="trailingMargin" secondItem="T2D-he-6Vl" secondAttribute="trailing" id="vfq-hP-GCw"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Map" id="HOg-N8-sBB"/>
+                    <tabBarItem key="tabBarItem" title="Map" image="map_icon" id="HOg-N8-sBB"/>
                     <connections>
                         <outlet property="currentPaceLabel" destination="Aag-l2-Ref" id="8mD-Fa-yWU"/>
                         <outlet property="distanceLabel" destination="J34-yx-yux" id="M2V-4J-ClV"/>
                         <outlet property="durationLabel" destination="kLR-K9-Xwb" id="kTI-RV-AAN"/>
+                        <outlet property="humidityLabel" destination="tJW-SY-Duz" id="TQe-6G-1eE"/>
                         <outlet property="mapView" destination="ury-L0-ueL" id="VXI-Xb-mUG"/>
                         <outlet property="overallPaceLabel" destination="TJl-K1-4Rl" id="H7J-bC-1bD"/>
+                        <outlet property="precipitationLabel" destination="hyy-sV-65R" id="PyK-g8-w6b"/>
                         <outlet property="startAndPauseButton" destination="VCW-OC-DN2" id="oAr-wq-5YB"/>
                         <outlet property="stopButton" destination="T2D-he-6Vl" id="2zU-6j-xtk"/>
+                        <outlet property="temperatureLabel" destination="bs6-4u-EuF" id="M4Y-Fe-t54"/>
                         <outletCollection property="maps" destination="ury-L0-ueL" id="ovt-RG-TXU"/>
                         <outletCollection property="labels" destination="kLR-K9-Xwb" id="ij6-gT-RPG"/>
                         <outletCollection property="labels" destination="J34-yx-yux" id="lPl-WV-dy2"/>
@@ -112,6 +136,9 @@
                         <outletCollection property="labels" destination="TJl-K1-4Rl" id="gWW-Ot-f0R"/>
                         <outletCollection property="buttons" destination="VCW-OC-DN2" id="avB-cx-tMQ"/>
                         <outletCollection property="buttons" destination="T2D-he-6Vl" id="5Ku-k1-fKU"/>
+                        <outletCollection property="weatherLabels" destination="bs6-4u-EuF" id="RuH-Hj-6Bs"/>
+                        <outletCollection property="weatherLabels" destination="tJW-SY-Duz" id="0cO-Go-Fch"/>
+                        <outletCollection property="weatherLabels" destination="hyy-sV-65R" id="e2G-wi-e56"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -208,7 +235,7 @@
                             <constraint firstItem="6ts-sg-E0C" firstAttribute="bottom" secondItem="sQg-mJ-CYw" secondAttribute="top" id="mrL-Wv-N0p"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Leaderboard" id="uij-YM-HZf"/>
+                    <tabBarItem key="tabBarItem" title="Leaderboard" image="history_icon" id="uij-YM-HZf"/>
                     <connections>
                         <outlet property="runTableView" destination="6ts-sg-E0C" id="1FB-tz-khr"/>
                     </connections>
@@ -411,4 +438,8 @@
             <point key="canvasLocation" x="367" y="346"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="history_icon" width="22" height="24"/>
+        <image name="map_icon" width="20" height="20"/>
+    </resources>
 </document>

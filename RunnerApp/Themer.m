@@ -51,4 +51,8 @@
     //NSLog(@"maps count = %lu", (unsigned long)maps.count);
 }
 
+-(void)themeWeaherLabels:(NSArray *)weatherLabels {
+    
+}
+
 @end

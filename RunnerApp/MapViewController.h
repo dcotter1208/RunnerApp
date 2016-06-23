@@ -17,10 +17,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *currentPaceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *overallPaceLabel;
+@property (weak, nonatomic) IBOutlet UILabel *temperatureLabel;
+@property (weak, nonatomic) IBOutlet UILabel *humidityLabel;
+@property (weak, nonatomic) IBOutlet UILabel *precipitationLabel;
+
 
 //IBOutletCollections
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
 @property (strong, nonatomic) IBOutletCollection(MKMapView) NSArray *maps;
 @property (strong, nonatomic) IBOutletCollection (UILabel) NSArray *labels;
+@property (strong, nonatomic) IBOutletCollection (UILabel) NSArray *weatherLabels;
 
 @end
