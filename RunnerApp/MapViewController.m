@@ -15,13 +15,8 @@
 #import "Weather.h"
 #import "Themer.h"
 
-//==========================================================================================================
-//Weather add ==============================================================================================
-//==========================================================================================================
 @import WebKit;
 //weather key for Weather Underground (Wunderground): ed2eda62a0bc8673
-#import "Themer.h"
-
 @interface MapViewController ()
 //Outlets
 @property (weak, nonatomic) IBOutlet UIButton *startAndPauseButton;
@@ -120,8 +115,6 @@ MKCoordinateRegion userLocation;
                                  humidity:_weather.humidity
                                  precipitation:_weather.precipitation];
     
-    NSLog(@"RUN PACE 1: %@", run.pace);
-    
     [self saveRunToFirebase:run];
     _accumulatedDistance = 0;
 }
@@ -150,7 +143,6 @@ MKCoordinateRegion userLocation;
 
 - (void)eachSecond {
     _seconds++;
-    _accumulatedDistance += _distance;
     _durationLabel.text = [NSString stringWithFormat:@"Time: %@", [self formatRunTime:_seconds]];
     _distanceLabel.text = [NSString stringWithFormat:@"Distance (miles): %@", [self formatRunDistance:_accumulatedDistance]];
     _currentPaceLabel.text = [NSString stringWithFormat:@"Current Pace: %@", [self getCurrentPace]];
@@ -163,8 +155,8 @@ MKCoordinateRegion userLocation;
     float miles = run.distance/1609.344;
     FIRDatabaseReference *fbDataService = [[FIRDatabase database] reference];
     FIRDatabaseReference *runsRef = [fbDataService child:@"runs"].childByAutoId;
-    NSLog(@"RUN PACE: %@", run.pace);
-        NSDictionary *runToAdd = @{
+
+    NSDictionary *runToAdd = @{
                                    @"runner" : run.runner,
                                    @"duration": [NSNumber numberWithInt:run.duration],
                                    @"distance": [NSNumber numberWithFloat:miles],
@@ -174,7 +166,6 @@ MKCoordinateRegion userLocation;
                                    @"humidity": run.humidity,
                                    @"precipitation": run.precipitation,
                                    };
-    NSLog(@"run dictionary: %@", runToAdd.description);
         [runsRef setValue:runToAdd];
 }
 
@@ -224,20 +215,19 @@ MKCoordinateRegion userLocation;
     if (_seconds <= 21) {
         currentPace = @"calculating...";
         [currentPaceArray addObject:[NSNumber numberWithInt:_distance]];
-        NSLog(@"_distance = %@", [NSNumber numberWithInt:_distance]);
+//        NSLog(@"_distance = %@", [NSNumber numberWithInt:_distance]);
     } else {
         [currentPaceArray removeObjectAtIndex:0];
         [currentPaceArray addObject:[NSNumber numberWithInt:_distance]];
         float miles = (([currentPaceArray[1] intValue] + [currentPaceArray[20] intValue])/3218.688)*3600;
-        currentPace = [NSString stringWithFormat:@"%.02f mph", miles];
-        NSLog(@"Current Pace = %@", currentPaceArray[1]);
+        currentPace = [NSString stringWithFormat:@"%.2f mph", miles];
     }
     return currentPace;
 }
 
 -(NSString *) getOverallPace {
     float miles = _accumulatedDistance/1609.344;
-    NSString *overallPace = [NSString stringWithFormat:@"%.02f mph", (miles/_seconds)*3600];
+    NSString *overallPace = [NSString stringWithFormat:@"%.2f mph", (miles/_seconds)*3600];
     return overallPace;
 }
 
@@ -277,7 +267,6 @@ MKCoordinateRegion userLocation;
 
 //Sets up the MapView.
 -(void)mapSetup {
-    //check constraints on this as they seem to be causing map size errors on phones > 5
     [_mapView setDelegate:self];
     [_mapView setShowsUserLocation:true];
     [self getUserLocation];
@@ -298,7 +287,6 @@ MKCoordinateRegion userLocation;
         newLocation = _locationManager.location;
         MKCoordinateRegion initialLocation = MKCoordinateRegionMakeWithDistance(newLocation.coordinate, 500.0, 500.0);
         [_mapView setRegion:initialLocation animated:YES];
-
     }
 }
 
@@ -309,6 +297,7 @@ MKCoordinateRegion userLocation;
             // update distance
             if (self.recordedLocations.count > 0) {
                 _distance = [newLocation distanceFromLocation:self.recordedLocations.lastObject];
+                _accumulatedDistance += _distance;
             }
             
             [self.recordedLocations addObject:newLocation];
@@ -318,7 +307,6 @@ MKCoordinateRegion userLocation;
             
             //map's region is set using the region we made from the user's location. Each time the user's location changes this method is called and the new map region is set.
             [_mapView setRegion:userLocation animated:YES];
-            
         }
     }
 }
