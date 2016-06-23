@@ -40,7 +40,15 @@
     FIRDatabaseQuery *currentUserRunHistory = [[runsRef queryOrderedByChild:@"runner"] queryEqualToValue:[FIRAuth auth].currentUser.uid];
     
     [currentUserRunHistory observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot) {
-        Run *run = [[Run alloc]initWithRunner:snapshot.value[@"runner"] duration:[snapshot.value[@"duration"]intValue] distance:[snapshot.value[@"distance"]floatValue] date:snapshot.value[@"date"] temperature:snapshot.value[@"temperature"] humidity:snapshot.value[@"humidity"] precipitation:snapshot.value[@"precipitation"]];
+        Run *run = [[Run alloc]initWithRunner:snapshot.value[@"runner"]
+                                     duration:[snapshot.value[@"duration"]intValue]
+                                     distance:[snapshot.value[@"distance"]floatValue]
+                                     date:snapshot.value[@"date"]
+                                     pace: snapshot.value[@"overallPace"]
+                                     temperature:snapshot.value[@"temperature"]
+                                     humidity:snapshot.value[@"humidity"]
+                                     precipitation:snapshot.value[@"precipitation"]];
+        
         [_runArray addObject:run];
         [_runTableView reloadData];
     }];
@@ -66,9 +74,9 @@
     Run *run = [_runArray objectAtIndex:indexPath.row];
     
     cell.dateLabel.text = run.date;
-    
     cell.durationLabel.text = [NSString stringWithFormat:@"Duration: %@", [self formatRunTime:run.duration]];
     cell.distanceLabel.text = [NSString stringWithFormat:@"Distance: %.2f", run.distance];
+    cell.paceLabel.text = [NSString stringWithFormat:@"Pace: %@", run.pace];
     
     return cell;
     
