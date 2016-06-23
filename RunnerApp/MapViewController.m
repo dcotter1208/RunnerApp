@@ -62,10 +62,17 @@ MKCoordinateRegion userLocation;
                     
                     // disptch_async updates my labels with the weather info when it is returned from the API / data provider.
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        _weather = [[Weather alloc]initWithWeatherTemp:[weatherJSON valueForKeyPath:@"current_observation.temp_f"] precipitation:[weatherJSON valueForKeyPath:@"current_observation.relative_humidity"] humidity:[weatherJSON valueForKeyPath:@"current_observation.precip_1hr_in"]];
+                        _weather = [[Weather alloc]initWithWeatherTemp:[weatherJSON valueForKeyPath:@"current_observation.temp_f"]
+                                                         precipitation:[weatherJSON valueForKeyPath:@"current_observation.precip_1hr_in"]
+                                                              humidity:[weatherJSON valueForKeyPath:@"current_observation.relative_humidity"]];
 //                        _weather.temperature = [weatherJSON valueForKeyPath:@"current_observation.temp_f"];
 //                        _weather.humidity = [weatherJSON valueForKeyPath:@"current_observation.relative_humidity"];
 //                        _weather.precipitation = [weatherJSON valueForKeyPath:@"current_observation.precip_1hr_in"];
+                        
+                        _temperatureLabel.text = [NSString stringWithFormat:@"temp: %i\u00B0", [_weather.temperature intValue]];
+                        //_temperatureLabel.text = [NSString stringWithFormat:@"%@", _weather.temperature];
+                        _humidityLabel.text = [NSString stringWithFormat:@"humidity: %@", _weather.humidity];
+                        _precipitationLabel.text = [NSString stringWithFormat:@"precip: %@", (_weather.precipitation <= 0) ? 0 : _weather.precipitation];
                     });
                 }
             } else {
@@ -202,6 +209,7 @@ MKCoordinateRegion userLocation;
     [mvcTheme themeButtons: _buttons];
     [mvcTheme themeLabels: _labels];
     [mvcTheme themeMaps: _maps];
+    [mvcTheme themeWeaherLabels: _weatherLabels];
     
     _currentPaceLabel.font = [UIFont systemFontOfSize:20];
     _overallPaceLabel.font = [UIFont systemFontOfSize:20];
@@ -233,10 +241,15 @@ MKCoordinateRegion userLocation;
 
 //Puts the semi-translucent view in that the start/stop/distance/duration views sit on.
 -(void)initDesignElements {
-    CGRect screenRect = {{0, [[UIScreen mainScreen] bounds].size.height-230}, {CGRectGetWidth(self.view.bounds), 230}};
-    UIView* coverView = [[UIView alloc] initWithFrame:screenRect];
-    coverView.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.6];
-    [self.view insertSubview:coverView atIndex:1];
+    CGRect lowerScreenRect = {{0, [[UIScreen mainScreen] bounds].size.height-230}, {CGRectGetWidth(self.view.bounds), 230}};
+    UIView* coverView1 = [[UIView alloc] initWithFrame:lowerScreenRect];
+    coverView1.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.6];
+    [self.view insertSubview:coverView1 atIndex:1];
+    
+    CGRect upperScreenRect = {{0, 0}, {CGRectGetWidth(self.view.bounds), 50}};
+    UIView* coverView2 = [[UIView alloc] initWithFrame:upperScreenRect];
+    coverView2.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.6];
+    [self.view insertSubview:coverView2 atIndex:1];
 }
 
 //Formats the run time into hours, minutes, seconds.

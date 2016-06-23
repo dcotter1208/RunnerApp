@@ -14,5 +14,6 @@
 -(void)themeLabels:(NSArray *)labels;
 -(void)themeTextFields:(NSArray *)textFields;
 -(void)themeMaps:(NSArray *)maps;
+-(void)themeWeaherLabels:(NSArray *)weatherLabels;
 
 @end
