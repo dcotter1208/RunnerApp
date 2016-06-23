@@ -15,8 +15,6 @@
 #import "Weather.h"
 #import "Themer.h"
 
-@import WebKit;
-//weather key for Weather Underground (Wunderground): ed2eda62a0bc8673
 @interface MapViewController ()
 //Outlets
 @property (weak, nonatomic) IBOutlet UIButton *startAndPauseButton;
@@ -35,6 +33,8 @@
 NSMutableArray *currentPaceArray;
 CLLocation *newLocation;
 MKCoordinateRegion userLocation;
+BOOL isTimerRunning;
+
 @implementation MapViewController
 
 - (void) getWeatherInfo {
@@ -81,9 +81,9 @@ MKCoordinateRegion userLocation;
 }
 
 - (void)viewDidLoad {
+    _weather = [[Weather alloc]initWithWeatherTemp:@"Unavailable" precipitation:@"Unavailable" humidity:@"Unavailable"];
     [self.navigationController setNavigationBarHidden:true];
     [super viewDidLoad];
-    _weather = [[Weather alloc]initWithWeatherTemp:@"Unavailable" precipitation:@"Unavailable" humidity:@"Unavailable"];
     [self getWeatherInfo];
     _accumulatedDistance = 0;
     currentPaceArray = [[NSMutableArray alloc]init];
@@ -134,11 +134,15 @@ MKCoordinateRegion userLocation;
 #pragma mark Timer Methods
 
 -(void)startTimer {
-    _timer = [NSTimer scheduledTimerWithTimeInterval:(1.0)
-                                              target:self
-                                            selector:@selector(eachSecond)
-                                            userInfo:nil
-                                             repeats:YES];
+    
+    if (isTimerRunning == TRUE) {
+        _timer = [NSTimer scheduledTimerWithTimeInterval:(1.0)
+                                                  target:self
+                                                selector:@selector(eachSecond)
+                                                userInfo:nil
+                                                 repeats:YES];
+    }
+
 }
 
 - (void)eachSecond {
@@ -319,6 +323,7 @@ MKCoordinateRegion userLocation;
 
     //START
     if ([_startAndPauseButton.titleLabel.text isEqualToString:@"Start"]) {
+        isTimerRunning = TRUE;
         _seconds = 0;
         _distance = 0;
         _accumulatedDistance = 0;
@@ -328,15 +333,21 @@ MKCoordinateRegion userLocation;
     }
     //PAUSE
     else if ([_startAndPauseButton.titleLabel.text isEqualToString:@"Pause"]) {
+        isTimerRunning = FALSE;
         [_timer invalidate];
         [_startAndPauseButton setTitle:@"Resume" forState:UIControlStateNormal];
         _recordedLocations = [NSMutableArray array];
     }
     //RESUME
     else {
-        [self startTimer];
-        _distance = _accumulatedDistance;
-        [_startAndPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
+        if (isTimerRunning == FALSE) {
+            isTimerRunning = TRUE;
+            [self startTimer];
+            _distance = _accumulatedDistance;
+            [_startAndPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
+        } else {
+            
+        }
     }
     
 }
