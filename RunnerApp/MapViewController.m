@@ -289,8 +289,6 @@ BOOL isTimerRunning;
         [_locationManager setDistanceFilter:10];
         [_locationManager startUpdatingLocation];
         newLocation = _locationManager.location;
-        MKCoordinateRegion initialLocation = MKCoordinateRegionMakeWithDistance(newLocation.coordinate, 500.0, 500.0);
-        [_mapView setRegion:initialLocation animated:YES];
     }
 }
 
@@ -308,7 +306,6 @@ BOOL isTimerRunning;
             
             //Creates a region based on the user's new location.
             userLocation = MKCoordinateRegionMakeWithDistance(newLocation.coordinate, 500.0, 500.0);
-            
             //map's region is set using the region we made from the user's location. Each time the user's location changes this method is called and the new map region is set.
             [_mapView setRegion:userLocation animated:YES];
         }
