@@ -302,6 +302,8 @@ BOOL isTimerRunning;
         [_locationManager setDistanceFilter:10];
         [_locationManager startUpdatingLocation];
         newLocation = _locationManager.location;
+        MKCoordinateRegion initialMapRegion = MKCoordinateRegionMakeWithDistance(newLocation.coordinate, 500.0, 500.0);
+        [_mapView setRegion:initialMapRegion];
     }
 }
 
