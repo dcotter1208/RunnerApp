@@ -52,8 +52,6 @@
     return result;
 }
 
-//Change this so the password must be > than 6 & < 20 Characters, made up of letters and numbers and contain at least one special character. It should also be case sensitive.
-
 -(BOOL)validatePassword:(NSString *)password {
     NSString    *regex = @"^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]*$";
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];

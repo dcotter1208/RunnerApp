@@ -37,66 +37,19 @@ BOOL isTimerRunning;
 
 @implementation MapViewController
 
-- (void) getWeatherInfo {
-    double lon = newLocation.coordinate.longitude;
-    double lat = newLocation.coordinate.latitude;
-
-    NSString *weatherUrlString = [NSString stringWithFormat:@"http://api.wunderground.com/api/ed2eda62a0bc8673/conditions/q/%0.8f,%0.8f.json", lat, lon];
-    NSURL *weatherUrl = [NSURL URLWithString:weatherUrlString];
-
-    NSURLSessionConfiguration *weatherConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *weatherSession = [NSURLSession sessionWithConfiguration:weatherConfig];
-    NSURLSessionDataTask *weatherDataTask = [weatherSession dataTaskWithURL:weatherUrl completionHandler:
-    ^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (!error) {
-            //Cast the NSURLResponse to a NSHTTPURLResponse so we can get access to the 'status code'
-            NSHTTPURLResponse *urlResponse = (NSHTTPURLResponse*) response;
-            //If that status code is 200 - meaning the response was good
-            if (urlResponse.statusCode == 200) {
-                //Make a NSError to hold a domain error if one ends up existing.
-                NSError *jsonError;
-                //turn the returned JSON into a NSDictionary and pass in the jsonError error that we created (&jsonError).
-                NSDictionary *weatherJSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
-                //If there is no jsonError
-                if (!jsonError) {
-                    
-                    // disptch_async updates my labels with the weather info when it is returned from the API / data provider.
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        _weather = [[Weather alloc]initWithWeatherTemp:[weatherJSON valueForKeyPath:@"current_observation.temp_f"]
-                                                         precipitation:[weatherJSON valueForKeyPath:@"current_observation.precip_1hr_in"]
-                                                              humidity:[weatherJSON valueForKeyPath:@"current_observation.relative_humidity"]];
-//                        _weather.temperature = [weatherJSON valueForKeyPath:@"current_observation.temp_f"];
-//                        _weather.humidity = [weatherJSON valueForKeyPath:@"current_observation.relative_humidity"];
-//                        _weather.precipitation = [weatherJSON valueForKeyPath:@"current_observation.precip_1hr_in"];
-                        
-                        _temperatureLabel.text = [NSString stringWithFormat:@"temp: %i\u00B0", [_weather.temperature intValue]];
-                        //_temperatureLabel.text = [NSString stringWithFormat:@"%@", _weather.temperature];
-                        _humidityLabel.text = [NSString stringWithFormat:@"humidity: %@", _weather.humidity];
-                        _precipitationLabel.text = [NSString stringWithFormat:@"precip: %@", (_weather.precipitation <= 0) ? 0 : _weather.precipitation];
-                    });
-                }
-            } else {
-                NSLog(@"RESPONSE ERROR: %@", urlResponse.description);
-            }
-        } else {
-            NSLog(@"ERROR: %@", error.description);
-        }
-    }];
-
-    //This starts the network call.
-    [weatherDataTask resume];
-}
-
 - (void)viewDidLoad {
     _weather = [[Weather alloc]initWithWeatherTemp:@"Unavailable" precipitation:@"Unavailable" humidity:@"Unavailable"];
     [self.navigationController setNavigationBarHidden:true];
     [super viewDidLoad];
-    [self getWeatherInfo];
-    _accumulatedDistance = 0;
-    currentPaceArray = [[NSMutableArray alloc]init];
     [self mapSetup];
     [self initDesignElements];
     [self customUISetup];
+    _accumulatedDistance = 0;
+    currentPaceArray = [[NSMutableArray alloc]init];
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    [self getWeatherInfo];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -219,8 +172,6 @@ BOOL isTimerRunning;
     Themer *mvcTheme = [[Themer alloc]init];
     [mvcTheme themeButtons: _buttons];
     [mvcTheme themeLabels: _labels];
-    [mvcTheme themeMaps: _maps];
-    [mvcTheme themeWeaherLabels: _weatherLabels];
     
     _currentPaceLabel.font = [UIFont systemFontOfSize:20];
     _overallPaceLabel.font = [UIFont systemFontOfSize:20];
@@ -234,7 +185,6 @@ BOOL isTimerRunning;
     if (_seconds <= 21) {
         currentPace = @"calculating...";
         [currentPaceArray addObject:[NSNumber numberWithInt:_distance]];
-//        NSLog(@"_distance = %@", [NSNumber numberWithInt:_distance]);
     } else {
         [currentPaceArray removeObjectAtIndex:0];
         [currentPaceArray addObject:[NSNumber numberWithInt:_distance]];
@@ -336,6 +286,52 @@ BOOL isTimerRunning;
 
 - (IBAction)stopButtonPressed:(id)sender {
     [self alertMessage:@"Are you ready to save your run?"];
+}
+
+#pragma mark WeatherAPI Call
+- (void) getWeatherInfo {
+    double lon = newLocation.coordinate.longitude;
+    double lat = newLocation.coordinate.latitude;
+    
+    NSString *weatherUrlString = [NSString stringWithFormat:@"http://api.wunderground.com/api/ed2eda62a0bc8673/conditions/q/%0.8f,%0.8f.json", lat, lon];
+    NSURL *weatherUrl = [NSURL URLWithString:weatherUrlString];
+    
+    NSURLSessionConfiguration *weatherConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *weatherSession = [NSURLSession sessionWithConfiguration:weatherConfig];
+    NSURLSessionDataTask *weatherDataTask = [weatherSession dataTaskWithURL:weatherUrl completionHandler:
+     ^(NSData *data, NSURLResponse *response, NSError *error) {
+         if (!error) {
+             //Cast the NSURLResponse to a NSHTTPURLResponse so we can get access to the 'status code'
+             NSHTTPURLResponse *urlResponse = (NSHTTPURLResponse*) response;
+             //If that status code is 200 - meaning the response was good
+             if (urlResponse.statusCode == 200) {
+                 //Make a NSError to hold a domain error if one ends up existing.
+                 NSError *jsonError;
+                 //turn the returned JSON into a NSDictionary and pass in the jsonError error that we created (&jsonError).
+                 NSDictionary *weatherJSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
+                 //If there is no jsonError
+                 if (!jsonError) {
+                     
+                     // disptch_async updates my labels with the weather info when it is returned from the API / data provider.
+                     dispatch_async(dispatch_get_main_queue(), ^{
+                         if ([[weatherJSON valueForKeyPath:@"current_observation.precip_1hr_in"] isEqualToString:@"-999.00"]) {
+                             _weather = [[Weather alloc]initWithWeatherTemp:[weatherJSON valueForKeyPath:@"current_observation.temp_f"] precipitation:@"0.00" humidity:[weatherJSON valueForKeyPath:@"current_observation.relative_humidity"]];
+                         } else {
+                             _weather = [[Weather alloc]initWithWeatherTemp:[weatherJSON valueForKeyPath:@"current_observation.temp_f"]
+                                                       precipitation:[weatherJSON valueForKeyPath:@"current_observation.precip_1hr_in"]
+                                                        humidity:[weatherJSON valueForKeyPath:@"current_observation.relative_humidity"]];
+                             
+                         }
+                         _temperatureLabel.text = [NSString stringWithFormat:@"temp: %i\u00B0", [_weather.temperature intValue]];
+                         _humidityLabel.text = [NSString stringWithFormat:@"humidity: %@", _weather.humidity];
+                         _precipitationLabel.text = [NSString stringWithFormat:@"precip: %@", _weather.precipitation];
+                     });
+                 }
+             }
+         }
+     }];
+    //This starts the network call.
+    [weatherDataTask resume];
 }
 
 - (IBAction)startAndPauseButtonPressed:(id)sender {

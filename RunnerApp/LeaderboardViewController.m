@@ -78,6 +78,7 @@
     cell.durationLabel.text = [NSString stringWithFormat:@"Duration: %@", [self formatRunTime:run.duration]];
     cell.distanceLabel.text = [NSString stringWithFormat:@"Distance: %.2f", run.distance];
     cell.paceLabel.text = [NSString stringWithFormat:@"Pace: %@", run.pace];
+    cell.weatherLabel.text = [NSString stringWithFormat:@"Weather: %@ \u00B0, %@ humidity, %@ precip.", run.temperature, run.humidity, run.precipitation];
     
     return cell;
     

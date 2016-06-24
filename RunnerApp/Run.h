@@ -6,24 +6,6 @@
 //  Copyright © 2016 DetroitLabs. All rights reserved.
 //
 
-/*
- MVP Class:
- - duration
- - distance
- - date
- 
- Later:
- - RunnerID
- 
- Stretch:
- - startTime
- - endTime
- - startLocation
- - endLocation
- - weather
- -
- */
-
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
