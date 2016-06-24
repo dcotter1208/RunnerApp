@@ -14,6 +14,7 @@
 #import "Run.h"
 #import "Weather.h"
 #import "Themer.h"
+#import "Math.h"
 
 @import WebKit;
 //weather key for Weather Underground (Wunderground): ed2eda62a0bc8673
@@ -35,6 +36,10 @@
 NSMutableArray *currentPaceArray;
 CLLocation *newLocation;
 MKCoordinateRegion userLocation;
+// paceInterval is the number of previous location updates to be considered in the calculation of the current pace
+int paceInterval = 3;
+float minPerMilePace;
+
 @implementation MapViewController
 
 - (void) getWeatherInfo {
@@ -82,8 +87,9 @@ MKCoordinateRegion userLocation;
 
 - (void)viewDidLoad {
     [self.navigationController setNavigationBarHidden:true];
-    [super viewDidLoad];
     _weather = [[Weather alloc]initWithWeatherTemp:@"Unavailable" precipitation:@"Unavailable" humidity:@"Unavailable"];
+
+    [super viewDidLoad];
     [self getWeatherInfo];
     _accumulatedDistance = 0;
     currentPaceArray = [[NSMutableArray alloc]init];
@@ -141,6 +147,14 @@ MKCoordinateRegion userLocation;
                                              repeats:YES];
 }
 
+-(void)startTimer2 {
+    _timer2 = [NSTimer scheduledTimerWithTimeInterval:(1.0)
+                                              target:self
+                                            selector:@selector(eachTenSeconds)
+                                            userInfo:nil
+                                             repeats:YES];
+}
+
 - (void)eachSecond {
     _seconds++;
     _durationLabel.text = [NSString stringWithFormat:@"Time: %@", [self formatRunTime:_seconds]];
@@ -166,7 +180,9 @@ MKCoordinateRegion userLocation;
                                    @"humidity": run.humidity,
                                    @"precipitation": run.precipitation,
                                    };
-        [runsRef setValue:runToAdd];
+    NSLog(@"dictionary at firebase save: %@", runToAdd.description);
+    [runsRef setValue:runToAdd];
+    
 }
 
 #pragma mark Helper Methods
@@ -210,17 +226,18 @@ MKCoordinateRegion userLocation;
     _stopButton.backgroundColor = [UIColor redColor];
 }
 
--(NSString *) getCurrentPace {
+-(NSString *) getCurrentPace
+{
     NSString *currentPace;
-    if (_seconds <= 21) {
+    
+    if (self.recordedLocations.count < paceInterval + 1)
+    {
         currentPace = @"calculating...";
-        [currentPaceArray addObject:[NSNumber numberWithInt:_distance]];
-//        NSLog(@"_distance = %@", [NSNumber numberWithInt:_distance]);
-    } else {
-        [currentPaceArray removeObjectAtIndex:0];
-        [currentPaceArray addObject:[NSNumber numberWithInt:_distance]];
-        float miles = (([currentPaceArray[1] intValue] + [currentPaceArray[20] intValue])/3218.688)*3600;
-        currentPace = [NSString stringWithFormat:@"%.2f mph", miles];
+    }
+    else
+    {
+        //currentPace = @"something else";
+        currentPace = [NSString stringWithFormat:@"%.0f:%02.0f", trunc(minPerMilePace), fmod(minPerMilePace,1)*60]; // [NSString stringWithFormat:@"%.2f mph", miles];
     }
     return currentPace;
 }
@@ -290,16 +307,44 @@ MKCoordinateRegion userLocation;
     }
 }
 
--(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
+{
+    float distanceTraveledInInterval;
     
-    for (CLLocation *newLocation in locations) {
-        if (newLocation.horizontalAccuracy < 20) {
+    for (CLLocation *newLocation in locations)
+    {
+        if (newLocation.horizontalAccuracy < 20)
+        {
             // update distance
-            if (self.recordedLocations.count > 0) {
+            if (self.recordedLocations.count > 0)
+            {
                 _distance = [newLocation distanceFromLocation:self.recordedLocations.lastObject];
                 _accumulatedDistance += _distance;
             }
             
+            if (self.recordedLocations.count >= paceInterval + 1)
+            {
+                
+                int x = ((self.recordedLocations.count) - paceInterval - 1);
+                
+                float distanceTraveledInInterval = [newLocation distanceFromLocation:[self.recordedLocations objectAtIndex:x]];
+                
+                NSLog(@"distanceTraveledInInterval is %f", distanceTraveledInInterval);
+
+                //NSLog(@"index for start of interval is: %i", x);
+                CLLocation *locationAtStartOfInterval = [self.recordedLocations objectAtIndex:x];
+                
+                NSDate *timeAtStartOfInterval = [locationAtStartOfInterval timestamp];
+                NSDate *timeAtEndOfInterval = [newLocation timestamp]; //:self.recordedLocations[self.recordedLocations.count - paceInterval - 1]];
+                // NSLog(@"timeAtStartOfInterval: %@", timeAtStartOfInterval);
+                //NSLog(@"timeAtStartOfInterval: %@", timeAtStartOfInterval);
+                //NSLog(@"timeAtEndOfInterval: %@", timeAtEndOfInterval);
+                float timeElapsedInInterval = [timeAtEndOfInterval timeIntervalSinceDate:timeAtStartOfInterval];
+                NSLog(@"seconds in interval are: %f", timeElapsedInInterval);
+                minPerMilePace = (timeElapsedInInterval/60) / (distanceTraveledInInterval/1609);
+                NSLog(@"current pace is %f per mile", minPerMilePace);
+            }
+
             [self.recordedLocations addObject:newLocation];
             
             //Creates a region based on the user's new location.
