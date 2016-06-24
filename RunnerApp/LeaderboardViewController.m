@@ -35,11 +35,12 @@
 
 -(void)queryRunsFromFirebase {
         
-    FIRDatabaseReference *fbDataService = [[FIRDatabase database] reference];
-    FIRDatabaseReference *runsRef = [fbDataService.ref child:@"runs"];
+    FIRDatabaseReference *fbDatabaseRef = [[FIRDatabase database] reference];
+    FIRDatabaseReference *runsRef = [fbDatabaseRef.ref child:@"runs"];
     FIRDatabaseQuery *currentUserRunHistory = [[runsRef queryOrderedByChild:@"runner"] queryEqualToValue:[FIRAuth auth].currentUser.uid];
     
     [currentUserRunHistory observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot) {
+        
         Run *run = [[Run alloc]initWithRunner:snapshot.value[@"runner"]
                                      duration:[snapshot.value[@"duration"]intValue]
                                      distance:[snapshot.value[@"distance"]floatValue]
@@ -81,6 +82,5 @@
     return cell;
     
 }
-
 
 @end

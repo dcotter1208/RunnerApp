@@ -167,6 +167,12 @@ BOOL isTimerRunning;
     FIRDatabaseReference *fbDataService = [[FIRDatabase database] reference];
     FIRDatabaseReference *runsRef = [fbDataService child:@"runs"].childByAutoId;
 
+    if (run.temperature == nil && run.humidity == nil && run.precipitation == 0) {
+        run.temperature = @"NA";
+        run.humidity = @"NA";
+        run.precipitation =@"NA";
+    }
+    
     NSDictionary *runToAdd = @{
                                    @"runner" : run.runner,
                                    @"duration": [NSNumber numberWithInt:run.duration],
@@ -177,6 +183,7 @@ BOOL isTimerRunning;
                                    @"humidity": run.humidity,
                                    @"precipitation": run.precipitation,
                                    };
+    
         [runsRef setValue:runToAdd];
 }
 
