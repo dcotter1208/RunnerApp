@@ -87,7 +87,6 @@ BOOL isTimerRunning;
     _accumulatedDistance = 0;
     _durationLabel.text = [NSString stringWithFormat:@"Time:"];
     _distanceLabel.text = [NSString stringWithFormat:@"Distance (miles):"];
-    _currentPaceLabel.text = [NSString stringWithFormat:@"Current Pace:"];
     _overallPaceLabel.text = [NSString stringWithFormat:@"Overall Pace:"];
 }
 
@@ -109,7 +108,6 @@ BOOL isTimerRunning;
     _seconds++;
     _durationLabel.text = [NSString stringWithFormat:@"Time: %@", [self formatRunTime:_seconds]];
     _distanceLabel.text = [NSString stringWithFormat:@"Distance (miles): %@", [self formatRunDistance:_accumulatedDistance]];
-    _currentPaceLabel.text = [NSString stringWithFormat:@"Current Pace: %@", [self getCurrentPace]];
     _overallPaceLabel.text = [NSString stringWithFormat:@"Overall Pace: %@", [self getOverallPace]];
 }
 
@@ -173,7 +171,6 @@ BOOL isTimerRunning;
     [mvcTheme themeButtons: _buttons];
     [mvcTheme themeLabels: _labels];
     
-    _currentPaceLabel.font = [UIFont systemFontOfSize:20];
     _overallPaceLabel.font = [UIFont systemFontOfSize:20];
     
     _startAndPauseButton.backgroundColor = [UIColor colorWithRed:39.0f/255.0f green:196.0f/255.0f blue:36.0f/255.0f alpha:1.0];
